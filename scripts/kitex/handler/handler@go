@@ -1,0 +1,11 @@
+package handler
+
+import (
+	#SERVICE_PACKAGE# "github.com/wen-flower/easy-douyin/kitex_gen/#SERVICE_PACKAGE#"
+)
+
+// #SERVICE_NAME_CAMEL_CASE#Impl implements the last service interface defined in the IDL.
+type #SERVICE_NAME_CAMEL_CASE#Impl struct{}
+
+// 检查 #SERVICE_NAME_CAMEL_CASE#Impl 是否实现了 #SERVICE_PACKAGE#.#SERVICE_NAME_CAMEL_CASE# 接口
+var _ #SERVICE_PACKAGE#.#SERVICE_NAME_CAMEL_CASE# = (*#SERVICE_NAME_CAMEL_CASE#Impl)(nil)

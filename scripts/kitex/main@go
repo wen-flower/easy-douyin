@@ -7,9 +7,9 @@ import (
 	"github.com/kitex-contrib/obs-opentelemetry/provider"
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	etcd "github.com/kitex-contrib/registry-etcd"
-	"github.com/wen-flower/easy-douyin/cmd/user/consts"
-	"github.com/wen-flower/easy-douyin/cmd/user/handler"
-	user "github.com/wen-flower/easy-douyin/kitex_gen/user/userservice"
+	"github.com/wen-flower/easy-douyin/cmd/#SERVICE_PACKAGE#/consts"
+	"github.com/wen-flower/easy-douyin/cmd/#SERVICE_PACKAGE#/handler"
+	user "github.com/wen-flower/easy-douyin/kitex_gen/#SERVICE_PACKAGE#/#SERVICE_NAME_LOWER#"
 	"github.com/wen-flower/easy-douyin/pkg/command"
 	"github.com/wen-flower/easy-douyin/pkg/constant"
 	"github.com/wen-flower/easy-douyin/pkg/mw"
@@ -38,9 +38,9 @@ func run() error {
 
 	// 初始化 otlp 跟踪和指标提供程序
 	provider.NewOpenTelemetryProvider(
-		provider.WithServiceName(consts.ServiceName),         // 配置服务名
+		provider.WithServiceName(consts.ServiceName),        // 配置服务名
 		provider.WithExportEndpoint(constant.ExportEndpoint), // 配置导出地址
-		provider.WithInsecure(),                              // 禁用导出程序 gRPC 的客户端传输安全性
+		provider.WithInsecure(),                             // 禁用导出程序 gRPC 的客户端传输安全性
 	)
 
 	// 用户服务基础信息
@@ -48,7 +48,7 @@ func run() error {
 		ServiceName: consts.ServiceName,
 	}
 
-	svr := user.NewServer(new(handler.UserServiceImpl),
+	svr := user.NewServer(new(handler.#SERVICE_NAME_CAMEL_CASE#Impl),
 		server.WithServiceAddr(addr),
 		server.WithRegistry(r),
 		server.WithMiddleware(mw.CommonMiddleware),

@@ -36,7 +36,7 @@ all: format build
 # 编译源码，依赖 tidy 目标自动添加/移除依赖包.
 .PHONY: build
 build:
-	@go build -v -ldflags "$(GO_LDFLAGS)" -o $(OUTPUT_DIR)/api-service $(ROOT_DIR)/main.go
+	@go build -v -ldflags "$(GO_LDFLAGS)" -o $(OUTPUT_DIR)/#SERVICE_NAME# $(ROOT_DIR)/main.go
 
 # 格式化 Go 源码.
 .PHONY: format
