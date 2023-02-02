@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `tb_user`
     `deleted_at`     DATETIME     NULL COMMENT '逻辑删除的时间',
 
     CONSTRAINT tb_user_uid_uindex UNIQUE KEY (`uid`) COMMENT '用户ID唯一',
-    CONSTRAINT tb_user_username_uindex UNIQUE KEY (`uid`) COMMENT '用户名唯一'
+    CONSTRAINT tb_user_username_uindex UNIQUE KEY (`username`) COMMENT '用户名唯一'
 ) comment '用户表';
 
 CREATE TABLE IF NOT EXISTS `tb_follow`

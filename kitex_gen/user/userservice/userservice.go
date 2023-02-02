@@ -20,6 +20,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	handlerType := (*user.UserService)(nil)
 	methods := map[string]kitex.MethodInfo{
 		"CreateUser": kitex.NewMethodInfo(createUserHandler, newUserServiceCreateUserArgs, newUserServiceCreateUserResult, false),
+		"CheckUser":  kitex.NewMethodInfo(checkUserHandler, newUserServiceCheckUserArgs, newUserServiceCheckUserResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "user",
@@ -38,7 +39,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 func createUserHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	realArg := arg.(*user.UserServiceCreateUserArgs)
 	realResult := result.(*user.UserServiceCreateUserResult)
-	success, err := handler.(user.UserService).CreateUser(ctx, realArg.Req)
+	success, err := handler.(user.UserService).CreateUser(ctx, realArg.Param)
 	if err != nil {
 		return err
 	}
@@ -53,6 +54,24 @@ func newUserServiceCreateUserResult() interface{} {
 	return user.NewUserServiceCreateUserResult()
 }
 
+func checkUserHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceCheckUserArgs)
+	realResult := result.(*user.UserServiceCheckUserResult)
+	success, err := handler.(user.UserService).CheckUser(ctx, realArg.Param)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserServiceCheckUserArgs() interface{} {
+	return user.NewUserServiceCheckUserArgs()
+}
+
+func newUserServiceCheckUserResult() interface{} {
+	return user.NewUserServiceCheckUserResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -63,11 +82,21 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) CreateUser(ctx context.Context, req *user.CreateUserRequest) (r *user.CreateUserResponse, err error) {
+func (p *kClient) CreateUser(ctx context.Context, param *user.CreateUserParam) (r *user.CreateUserResp, err error) {
 	var _args user.UserServiceCreateUserArgs
-	_args.Req = req
+	_args.Param = param
 	var _result user.UserServiceCreateUserResult
 	if err = p.c.Call(ctx, "CreateUser", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) CheckUser(ctx context.Context, param *user.CheckUserParam) (r *user.CheckUserResp, err error) {
+	var _args user.UserServiceCheckUserArgs
+	_args.Param = param
+	var _result user.UserServiceCheckUserResult
+	if err = p.c.Call(ctx, "CheckUser", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

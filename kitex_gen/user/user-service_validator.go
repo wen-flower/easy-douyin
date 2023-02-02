@@ -21,9 +21,25 @@ var (
 	_ = time.Nanosecond
 )
 
-func (p *CreateUserRequest) IsValid() error {
+func (p *CreateUserParam) IsValid() error {
 	return nil
 }
-func (p *CreateUserResponse) IsValid() error {
+func (p *CreateUserResp) IsValid() error {
+	if p.BaseResp != nil {
+		if err := p.BaseResp.IsValid(); err != nil {
+			return fmt.Errorf("filed BaseResp not valid, %w", err)
+		}
+	}
+	return nil
+}
+func (p *CheckUserParam) IsValid() error {
+	return nil
+}
+func (p *CheckUserResp) IsValid() error {
+	if p.BaseResp != nil {
+		if err := p.BaseResp.IsValid(); err != nil {
+			return fmt.Errorf("filed BaseResp not valid, %w", err)
+		}
+	}
 	return nil
 }

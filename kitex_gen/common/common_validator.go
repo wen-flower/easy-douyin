@@ -20,3 +20,7 @@ var (
 	_ = (*regexp.Regexp)(nil)
 	_ = time.Nanosecond
 )
+
+func (p *BaseResp) IsValid() error {
+	return nil
+}

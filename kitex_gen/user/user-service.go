@@ -6,22 +6,43 @@ import (
 	"context"
 	"fmt"
 	"github.com/apache/thrift/lib/go/thrift"
+	"github.com/wen-flower/easy-douyin/kitex_gen/common"
+	"strings"
 )
 
-type CreateUserRequest struct {
+type CreateUserParam struct {
+	Username string `thrift:"username,1" frugal:"1,default,string" json:"username"`
+	Password string `thrift:"password,2" frugal:"2,default,string" json:"password"`
 }
 
-func NewCreateUserRequest() *CreateUserRequest {
-	return &CreateUserRequest{}
+func NewCreateUserParam() *CreateUserParam {
+	return &CreateUserParam{}
 }
 
-func (p *CreateUserRequest) InitDefault() {
-	*p = CreateUserRequest{}
+func (p *CreateUserParam) InitDefault() {
+	*p = CreateUserParam{}
 }
 
-var fieldIDToName_CreateUserRequest = map[int16]string{}
+func (p *CreateUserParam) GetUsername() (v string) {
+	return p.Username
+}
 
-func (p *CreateUserRequest) Read(iprot thrift.TProtocol) (err error) {
+func (p *CreateUserParam) GetPassword() (v string) {
+	return p.Password
+}
+func (p *CreateUserParam) SetUsername(val string) {
+	p.Username = val
+}
+func (p *CreateUserParam) SetPassword(val string) {
+	p.Password = val
+}
+
+var fieldIDToName_CreateUserParam = map[int16]string{
+	1: "username",
+	2: "password",
+}
+
+func (p *CreateUserParam) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -38,8 +59,32 @@ func (p *CreateUserRequest) Read(iprot thrift.TProtocol) (err error) {
 		if fieldTypeId == thrift.STOP {
 			break
 		}
-		if err = iprot.Skip(fieldTypeId); err != nil {
-			goto SkipFieldTypeError
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
 		}
 
 		if err = iprot.ReadFieldEnd(); err != nil {
@@ -55,8 +100,10 @@ ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-SkipFieldTypeError:
-	return thrift.PrependError(fmt.Sprintf("%T skip field type %d error", p, fieldTypeId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CreateUserParam[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
@@ -64,11 +111,38 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *CreateUserRequest) Write(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteStructBegin("CreateUserRequest"); err != nil {
+func (p *CreateUserParam) ReadField1(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Username = v
+	}
+	return nil
+}
+
+func (p *CreateUserParam) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Password = v
+	}
+	return nil
+}
+
+func (p *CreateUserParam) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("CreateUserParam"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
 
 	}
 	if err = oprot.WriteFieldStop(); err != nil {
@@ -80,42 +154,136 @@ func (p *CreateUserRequest) Write(oprot thrift.TProtocol) (err error) {
 	return nil
 WriteStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
 	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *CreateUserRequest) String() string {
+func (p *CreateUserParam) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("username", thrift.STRING, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Username); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *CreateUserParam) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("password", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Password); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *CreateUserParam) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("CreateUserRequest(%+v)", *p)
+	return fmt.Sprintf("CreateUserParam(%+v)", *p)
 }
 
-func (p *CreateUserRequest) DeepEqual(ano *CreateUserRequest) bool {
+func (p *CreateUserParam) DeepEqual(ano *CreateUserParam) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
 		return false
 	}
+	if !p.Field1DeepEqual(ano.Username) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.Password) {
+		return false
+	}
 	return true
 }
 
-type CreateUserResponse struct {
+func (p *CreateUserParam) Field1DeepEqual(src string) bool {
+
+	if strings.Compare(p.Username, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *CreateUserParam) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.Password, src) != 0 {
+		return false
+	}
+	return true
 }
 
-func NewCreateUserResponse() *CreateUserResponse {
-	return &CreateUserResponse{}
+type CreateUserResp struct {
+	BaseResp *common.BaseResp `thrift:"base_resp,1" frugal:"1,default,common.BaseResp" json:"base_resp"`
+	UserId   *int64           `thrift:"user_id,2,optional" frugal:"2,optional,i64" json:"user_id,omitempty"`
 }
 
-func (p *CreateUserResponse) InitDefault() {
-	*p = CreateUserResponse{}
+func NewCreateUserResp() *CreateUserResp {
+	return &CreateUserResp{}
 }
 
-var fieldIDToName_CreateUserResponse = map[int16]string{}
+func (p *CreateUserResp) InitDefault() {
+	*p = CreateUserResp{}
+}
 
-func (p *CreateUserResponse) Read(iprot thrift.TProtocol) (err error) {
+var CreateUserResp_BaseResp_DEFAULT *common.BaseResp
+
+func (p *CreateUserResp) GetBaseResp() (v *common.BaseResp) {
+	if !p.IsSetBaseResp() {
+		return CreateUserResp_BaseResp_DEFAULT
+	}
+	return p.BaseResp
+}
+
+var CreateUserResp_UserId_DEFAULT int64
+
+func (p *CreateUserResp) GetUserId() (v int64) {
+	if !p.IsSetUserId() {
+		return CreateUserResp_UserId_DEFAULT
+	}
+	return *p.UserId
+}
+func (p *CreateUserResp) SetBaseResp(val *common.BaseResp) {
+	p.BaseResp = val
+}
+func (p *CreateUserResp) SetUserId(val *int64) {
+	p.UserId = val
+}
+
+var fieldIDToName_CreateUserResp = map[int16]string{
+	1: "base_resp",
+	2: "user_id",
+}
+
+func (p *CreateUserResp) IsSetBaseResp() bool {
+	return p.BaseResp != nil
+}
+
+func (p *CreateUserResp) IsSetUserId() bool {
+	return p.UserId != nil
+}
+
+func (p *CreateUserResp) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -132,8 +300,32 @@ func (p *CreateUserResponse) Read(iprot thrift.TProtocol) (err error) {
 		if fieldTypeId == thrift.STOP {
 			break
 		}
-		if err = iprot.Skip(fieldTypeId); err != nil {
-			goto SkipFieldTypeError
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
 		}
 
 		if err = iprot.ReadFieldEnd(); err != nil {
@@ -149,8 +341,10 @@ ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-SkipFieldTypeError:
-	return thrift.PrependError(fmt.Sprintf("%T skip field type %d error", p, fieldTypeId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CreateUserResp[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
@@ -158,11 +352,37 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *CreateUserResponse) Write(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteStructBegin("CreateUserResponse"); err != nil {
+func (p *CreateUserResp) ReadField1(iprot thrift.TProtocol) error {
+	p.BaseResp = common.NewBaseResp()
+	if err := p.BaseResp.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *CreateUserResp) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.UserId = &v
+	}
+	return nil
+}
+
+func (p *CreateUserResp) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("CreateUserResp"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
 
 	}
 	if err = oprot.WriteFieldStop(); err != nil {
@@ -174,30 +394,566 @@ func (p *CreateUserResponse) Write(oprot thrift.TProtocol) (err error) {
 	return nil
 WriteStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
 	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *CreateUserResponse) String() string {
+func (p *CreateUserResp) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("base_resp", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.BaseResp.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *CreateUserResp) writeField2(oprot thrift.TProtocol) (err error) {
+	if p.IsSetUserId() {
+		if err = oprot.WriteFieldBegin("user_id", thrift.I64, 2); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(*p.UserId); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *CreateUserResp) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("CreateUserResponse(%+v)", *p)
+	return fmt.Sprintf("CreateUserResp(%+v)", *p)
 }
 
-func (p *CreateUserResponse) DeepEqual(ano *CreateUserResponse) bool {
+func (p *CreateUserResp) DeepEqual(ano *CreateUserResp) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.BaseResp) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.UserId) {
+		return false
+	}
+	return true
+}
+
+func (p *CreateUserResp) Field1DeepEqual(src *common.BaseResp) bool {
+
+	if !p.BaseResp.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+func (p *CreateUserResp) Field2DeepEqual(src *int64) bool {
+
+	if p.UserId == src {
+		return true
+	} else if p.UserId == nil || src == nil {
+		return false
+	}
+	if *p.UserId != *src {
+		return false
+	}
+	return true
+}
+
+type CheckUserParam struct {
+	Username string `thrift:"username,1" frugal:"1,default,string" json:"username"`
+	Password string `thrift:"password,2" frugal:"2,default,string" json:"password"`
+}
+
+func NewCheckUserParam() *CheckUserParam {
+	return &CheckUserParam{}
+}
+
+func (p *CheckUserParam) InitDefault() {
+	*p = CheckUserParam{}
+}
+
+func (p *CheckUserParam) GetUsername() (v string) {
+	return p.Username
+}
+
+func (p *CheckUserParam) GetPassword() (v string) {
+	return p.Password
+}
+func (p *CheckUserParam) SetUsername(val string) {
+	p.Username = val
+}
+func (p *CheckUserParam) SetPassword(val string) {
+	p.Password = val
+}
+
+var fieldIDToName_CheckUserParam = map[int16]string{
+	1: "username",
+	2: "password",
+}
+
+func (p *CheckUserParam) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CheckUserParam[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *CheckUserParam) ReadField1(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Username = v
+	}
+	return nil
+}
+
+func (p *CheckUserParam) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Password = v
+	}
+	return nil
+}
+
+func (p *CheckUserParam) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("CheckUserParam"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *CheckUserParam) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("username", thrift.STRING, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Username); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *CheckUserParam) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("password", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Password); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *CheckUserParam) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("CheckUserParam(%+v)", *p)
+}
+
+func (p *CheckUserParam) DeepEqual(ano *CheckUserParam) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Username) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.Password) {
+		return false
+	}
+	return true
+}
+
+func (p *CheckUserParam) Field1DeepEqual(src string) bool {
+
+	if strings.Compare(p.Username, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *CheckUserParam) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.Password, src) != 0 {
+		return false
+	}
+	return true
+}
+
+type CheckUserResp struct {
+	BaseResp *common.BaseResp `thrift:"base_resp,1" frugal:"1,default,common.BaseResp" json:"base_resp"`
+	UserId   *int64           `thrift:"user_id,2,optional" frugal:"2,optional,i64" json:"user_id,omitempty"`
+}
+
+func NewCheckUserResp() *CheckUserResp {
+	return &CheckUserResp{}
+}
+
+func (p *CheckUserResp) InitDefault() {
+	*p = CheckUserResp{}
+}
+
+var CheckUserResp_BaseResp_DEFAULT *common.BaseResp
+
+func (p *CheckUserResp) GetBaseResp() (v *common.BaseResp) {
+	if !p.IsSetBaseResp() {
+		return CheckUserResp_BaseResp_DEFAULT
+	}
+	return p.BaseResp
+}
+
+var CheckUserResp_UserId_DEFAULT int64
+
+func (p *CheckUserResp) GetUserId() (v int64) {
+	if !p.IsSetUserId() {
+		return CheckUserResp_UserId_DEFAULT
+	}
+	return *p.UserId
+}
+func (p *CheckUserResp) SetBaseResp(val *common.BaseResp) {
+	p.BaseResp = val
+}
+func (p *CheckUserResp) SetUserId(val *int64) {
+	p.UserId = val
+}
+
+var fieldIDToName_CheckUserResp = map[int16]string{
+	1: "base_resp",
+	2: "user_id",
+}
+
+func (p *CheckUserResp) IsSetBaseResp() bool {
+	return p.BaseResp != nil
+}
+
+func (p *CheckUserResp) IsSetUserId() bool {
+	return p.UserId != nil
+}
+
+func (p *CheckUserResp) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CheckUserResp[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *CheckUserResp) ReadField1(iprot thrift.TProtocol) error {
+	p.BaseResp = common.NewBaseResp()
+	if err := p.BaseResp.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *CheckUserResp) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.UserId = &v
+	}
+	return nil
+}
+
+func (p *CheckUserResp) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("CheckUserResp"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *CheckUserResp) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("base_resp", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.BaseResp.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *CheckUserResp) writeField2(oprot thrift.TProtocol) (err error) {
+	if p.IsSetUserId() {
+		if err = oprot.WriteFieldBegin("user_id", thrift.I64, 2); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(*p.UserId); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *CheckUserResp) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("CheckUserResp(%+v)", *p)
+}
+
+func (p *CheckUserResp) DeepEqual(ano *CheckUserResp) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.BaseResp) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.UserId) {
+		return false
+	}
+	return true
+}
+
+func (p *CheckUserResp) Field1DeepEqual(src *common.BaseResp) bool {
+
+	if !p.BaseResp.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+func (p *CheckUserResp) Field2DeepEqual(src *int64) bool {
+
+	if p.UserId == src {
+		return true
+	} else if p.UserId == nil || src == nil {
+		return false
+	}
+	if *p.UserId != *src {
 		return false
 	}
 	return true
 }
 
 type UserService interface {
-	CreateUser(ctx context.Context, req *CreateUserRequest) (r *CreateUserResponse, err error)
+	CreateUser(ctx context.Context, param *CreateUserParam) (r *CreateUserResp, err error)
+
+	CheckUser(ctx context.Context, param *CheckUserParam) (r *CheckUserResp, err error)
 }
 
 type UserServiceClient struct {
@@ -226,11 +982,20 @@ func (p *UserServiceClient) Client_() thrift.TClient {
 	return p.c
 }
 
-func (p *UserServiceClient) CreateUser(ctx context.Context, req *CreateUserRequest) (r *CreateUserResponse, err error) {
+func (p *UserServiceClient) CreateUser(ctx context.Context, param *CreateUserParam) (r *CreateUserResp, err error) {
 	var _args UserServiceCreateUserArgs
-	_args.Req = req
+	_args.Param = param
 	var _result UserServiceCreateUserResult
 	if err = p.Client_().Call(ctx, "CreateUser", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+func (p *UserServiceClient) CheckUser(ctx context.Context, param *CheckUserParam) (r *CheckUserResp, err error) {
+	var _args UserServiceCheckUserArgs
+	_args.Param = param
+	var _result UserServiceCheckUserResult
+	if err = p.Client_().Call(ctx, "CheckUser", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -257,6 +1022,7 @@ func (p *UserServiceProcessor) ProcessorMap() map[string]thrift.TProcessorFuncti
 func NewUserServiceProcessor(handler UserService) *UserServiceProcessor {
 	self := &UserServiceProcessor{handler: handler, processorMap: make(map[string]thrift.TProcessorFunction)}
 	self.AddToProcessorMap("CreateUser", &userServiceProcessorCreateUser{handler: handler})
+	self.AddToProcessorMap("CheckUser", &userServiceProcessorCheckUser{handler: handler})
 	return self
 }
 func (p *UserServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -296,8 +1062,8 @@ func (p *userServiceProcessorCreateUser) Process(ctx context.Context, seqId int3
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := UserServiceCreateUserResult{}
-	var retval *CreateUserResponse
-	if retval, err2 = p.handler.CreateUser(ctx, args.Req); err2 != nil {
+	var retval *CreateUserResp
+	if retval, err2 = p.handler.CreateUser(ctx, args.Param); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing CreateUser: "+err2.Error())
 		oprot.WriteMessageBegin("CreateUser", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
@@ -325,8 +1091,56 @@ func (p *userServiceProcessorCreateUser) Process(ctx context.Context, seqId int3
 	return true, err
 }
 
+type userServiceProcessorCheckUser struct {
+	handler UserService
+}
+
+func (p *userServiceProcessorCheckUser) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := UserServiceCheckUserArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("CheckUser", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
+	}
+
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := UserServiceCheckUserResult{}
+	var retval *CheckUserResp
+	if retval, err2 = p.handler.CheckUser(ctx, args.Param); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing CheckUser: "+err2.Error())
+		oprot.WriteMessageBegin("CheckUser", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
+	}
+	if err2 = oprot.WriteMessageBegin("CheckUser", thrift.REPLY, seqId); err2 != nil {
+		err = err2
+	}
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
+	}
+	if err != nil {
+		return
+	}
+	return true, err
+}
+
 type UserServiceCreateUserArgs struct {
-	Req *CreateUserRequest `thrift:"req,1" frugal:"1,default,CreateUserRequest" json:"req"`
+	Param *CreateUserParam `thrift:"param,1" frugal:"1,default,CreateUserParam" json:"param"`
 }
 
 func NewUserServiceCreateUserArgs() *UserServiceCreateUserArgs {
@@ -337,24 +1151,24 @@ func (p *UserServiceCreateUserArgs) InitDefault() {
 	*p = UserServiceCreateUserArgs{}
 }
 
-var UserServiceCreateUserArgs_Req_DEFAULT *CreateUserRequest
+var UserServiceCreateUserArgs_Param_DEFAULT *CreateUserParam
 
-func (p *UserServiceCreateUserArgs) GetReq() (v *CreateUserRequest) {
-	if !p.IsSetReq() {
-		return UserServiceCreateUserArgs_Req_DEFAULT
+func (p *UserServiceCreateUserArgs) GetParam() (v *CreateUserParam) {
+	if !p.IsSetParam() {
+		return UserServiceCreateUserArgs_Param_DEFAULT
 	}
-	return p.Req
+	return p.Param
 }
-func (p *UserServiceCreateUserArgs) SetReq(val *CreateUserRequest) {
-	p.Req = val
+func (p *UserServiceCreateUserArgs) SetParam(val *CreateUserParam) {
+	p.Param = val
 }
 
 var fieldIDToName_UserServiceCreateUserArgs = map[int16]string{
-	1: "req",
+	1: "param",
 }
 
-func (p *UserServiceCreateUserArgs) IsSetReq() bool {
-	return p.Req != nil
+func (p *UserServiceCreateUserArgs) IsSetParam() bool {
+	return p.Param != nil
 }
 
 func (p *UserServiceCreateUserArgs) Read(iprot thrift.TProtocol) (err error) {
@@ -417,8 +1231,8 @@ ReadStructEndError:
 }
 
 func (p *UserServiceCreateUserArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = NewCreateUserRequest()
-	if err := p.Req.Read(iprot); err != nil {
+	p.Param = NewCreateUserParam()
+	if err := p.Param.Read(iprot); err != nil {
 		return err
 	}
 	return nil
@@ -454,10 +1268,10 @@ WriteStructEndError:
 }
 
 func (p *UserServiceCreateUserArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
+	if err = oprot.WriteFieldBegin("param", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := p.Req.Write(oprot); err != nil {
+	if err := p.Param.Write(oprot); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -483,22 +1297,22 @@ func (p *UserServiceCreateUserArgs) DeepEqual(ano *UserServiceCreateUserArgs) bo
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.Req) {
+	if !p.Field1DeepEqual(ano.Param) {
 		return false
 	}
 	return true
 }
 
-func (p *UserServiceCreateUserArgs) Field1DeepEqual(src *CreateUserRequest) bool {
+func (p *UserServiceCreateUserArgs) Field1DeepEqual(src *CreateUserParam) bool {
 
-	if !p.Req.DeepEqual(src) {
+	if !p.Param.DeepEqual(src) {
 		return false
 	}
 	return true
 }
 
 type UserServiceCreateUserResult struct {
-	Success *CreateUserResponse `thrift:"success,0,optional" frugal:"0,optional,CreateUserResponse" json:"success,omitempty"`
+	Success *CreateUserResp `thrift:"success,0,optional" frugal:"0,optional,CreateUserResp" json:"success,omitempty"`
 }
 
 func NewUserServiceCreateUserResult() *UserServiceCreateUserResult {
@@ -509,16 +1323,16 @@ func (p *UserServiceCreateUserResult) InitDefault() {
 	*p = UserServiceCreateUserResult{}
 }
 
-var UserServiceCreateUserResult_Success_DEFAULT *CreateUserResponse
+var UserServiceCreateUserResult_Success_DEFAULT *CreateUserResp
 
-func (p *UserServiceCreateUserResult) GetSuccess() (v *CreateUserResponse) {
+func (p *UserServiceCreateUserResult) GetSuccess() (v *CreateUserResp) {
 	if !p.IsSetSuccess() {
 		return UserServiceCreateUserResult_Success_DEFAULT
 	}
 	return p.Success
 }
 func (p *UserServiceCreateUserResult) SetSuccess(x interface{}) {
-	p.Success = x.(*CreateUserResponse)
+	p.Success = x.(*CreateUserResp)
 }
 
 var fieldIDToName_UserServiceCreateUserResult = map[int16]string{
@@ -589,7 +1403,7 @@ ReadStructEndError:
 }
 
 func (p *UserServiceCreateUserResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = NewCreateUserResponse()
+	p.Success = NewCreateUserResp()
 	if err := p.Success.Read(iprot); err != nil {
 		return err
 	}
@@ -663,7 +1477,353 @@ func (p *UserServiceCreateUserResult) DeepEqual(ano *UserServiceCreateUserResult
 	return true
 }
 
-func (p *UserServiceCreateUserResult) Field0DeepEqual(src *CreateUserResponse) bool {
+func (p *UserServiceCreateUserResult) Field0DeepEqual(src *CreateUserResp) bool {
+
+	if !p.Success.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+type UserServiceCheckUserArgs struct {
+	Param *CheckUserParam `thrift:"param,1" frugal:"1,default,CheckUserParam" json:"param"`
+}
+
+func NewUserServiceCheckUserArgs() *UserServiceCheckUserArgs {
+	return &UserServiceCheckUserArgs{}
+}
+
+func (p *UserServiceCheckUserArgs) InitDefault() {
+	*p = UserServiceCheckUserArgs{}
+}
+
+var UserServiceCheckUserArgs_Param_DEFAULT *CheckUserParam
+
+func (p *UserServiceCheckUserArgs) GetParam() (v *CheckUserParam) {
+	if !p.IsSetParam() {
+		return UserServiceCheckUserArgs_Param_DEFAULT
+	}
+	return p.Param
+}
+func (p *UserServiceCheckUserArgs) SetParam(val *CheckUserParam) {
+	p.Param = val
+}
+
+var fieldIDToName_UserServiceCheckUserArgs = map[int16]string{
+	1: "param",
+}
+
+func (p *UserServiceCheckUserArgs) IsSetParam() bool {
+	return p.Param != nil
+}
+
+func (p *UserServiceCheckUserArgs) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceCheckUserArgs[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *UserServiceCheckUserArgs) ReadField1(iprot thrift.TProtocol) error {
+	p.Param = NewCheckUserParam()
+	if err := p.Param.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *UserServiceCheckUserArgs) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("CheckUser_args"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *UserServiceCheckUserArgs) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("param", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Param.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *UserServiceCheckUserArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("UserServiceCheckUserArgs(%+v)", *p)
+}
+
+func (p *UserServiceCheckUserArgs) DeepEqual(ano *UserServiceCheckUserArgs) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Param) {
+		return false
+	}
+	return true
+}
+
+func (p *UserServiceCheckUserArgs) Field1DeepEqual(src *CheckUserParam) bool {
+
+	if !p.Param.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+type UserServiceCheckUserResult struct {
+	Success *CheckUserResp `thrift:"success,0,optional" frugal:"0,optional,CheckUserResp" json:"success,omitempty"`
+}
+
+func NewUserServiceCheckUserResult() *UserServiceCheckUserResult {
+	return &UserServiceCheckUserResult{}
+}
+
+func (p *UserServiceCheckUserResult) InitDefault() {
+	*p = UserServiceCheckUserResult{}
+}
+
+var UserServiceCheckUserResult_Success_DEFAULT *CheckUserResp
+
+func (p *UserServiceCheckUserResult) GetSuccess() (v *CheckUserResp) {
+	if !p.IsSetSuccess() {
+		return UserServiceCheckUserResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *UserServiceCheckUserResult) SetSuccess(x interface{}) {
+	p.Success = x.(*CheckUserResp)
+}
+
+var fieldIDToName_UserServiceCheckUserResult = map[int16]string{
+	0: "success",
+}
+
+func (p *UserServiceCheckUserResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *UserServiceCheckUserResult) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 0:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField0(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceCheckUserResult[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *UserServiceCheckUserResult) ReadField0(iprot thrift.TProtocol) error {
+	p.Success = NewCheckUserResp()
+	if err := p.Success.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *UserServiceCheckUserResult) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("CheckUser_result"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField0(oprot); err != nil {
+			fieldId = 0
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *UserServiceCheckUserResult) writeField0(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSuccess() {
+		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.Success.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
+}
+
+func (p *UserServiceCheckUserResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("UserServiceCheckUserResult(%+v)", *p)
+}
+
+func (p *UserServiceCheckUserResult) DeepEqual(ano *UserServiceCheckUserResult) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field0DeepEqual(ano.Success) {
+		return false
+	}
+	return true
+}
+
+func (p *UserServiceCheckUserResult) Field0DeepEqual(src *CheckUserResp) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false

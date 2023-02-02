@@ -11,7 +11,8 @@ import (
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	CreateUser(ctx context.Context, req *user.CreateUserRequest, callOptions ...callopt.Option) (r *user.CreateUserResponse, err error)
+	CreateUser(ctx context.Context, param *user.CreateUserParam, callOptions ...callopt.Option) (r *user.CreateUserResp, err error)
+	CheckUser(ctx context.Context, param *user.CheckUserParam, callOptions ...callopt.Option) (r *user.CheckUserResp, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -43,7 +44,12 @@ type kUserServiceClient struct {
 	*kClient
 }
 
-func (p *kUserServiceClient) CreateUser(ctx context.Context, req *user.CreateUserRequest, callOptions ...callopt.Option) (r *user.CreateUserResponse, err error) {
+func (p *kUserServiceClient) CreateUser(ctx context.Context, param *user.CreateUserParam, callOptions ...callopt.Option) (r *user.CreateUserResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.CreateUser(ctx, req)
+	return p.kClient.CreateUser(ctx, param)
+}
+
+func (p *kUserServiceClient) CheckUser(ctx context.Context, param *user.CheckUserParam, callOptions ...callopt.Option) (r *user.CheckUserResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.CheckUser(ctx, param)
 }

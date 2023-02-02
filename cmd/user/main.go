@@ -7,11 +7,14 @@ import (
 	"github.com/kitex-contrib/obs-opentelemetry/provider"
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	etcd "github.com/kitex-contrib/registry-etcd"
+	"github.com/wen-flower/easy-douyin/cmd/user/cfg"
 	"github.com/wen-flower/easy-douyin/cmd/user/consts"
+	"github.com/wen-flower/easy-douyin/cmd/user/dal"
 	"github.com/wen-flower/easy-douyin/cmd/user/handler"
 	user "github.com/wen-flower/easy-douyin/kitex_gen/user/userservice"
 	"github.com/wen-flower/easy-douyin/pkg/command"
 	"github.com/wen-flower/easy-douyin/pkg/constant"
+	"github.com/wen-flower/easy-douyin/pkg/mlog/kitexlog"
 	"github.com/wen-flower/easy-douyin/pkg/mw"
 	"net"
 	"os"
@@ -19,7 +22,9 @@ import (
 
 // 初始化数据层、日志框架等
 func initialize() {
+	dal.Init()
 
+	kitexlog.Init(cfg.Debug, cfg.LogJson, cfg.LogPretty)
 }
 
 func run() error {
@@ -29,7 +34,7 @@ func run() error {
 		panic(err)
 	}
 	// 解析用户服务运行的地址
-	addr, err := net.ResolveTCPAddr(constant.TCP, fmt.Sprintf(":%d", port))
+	addr, err := net.ResolveTCPAddr(constant.TCP, fmt.Sprintf(":%d", cfg.Port))
 	if err != nil {
 		panic(err)
 	}
@@ -63,29 +68,17 @@ func run() error {
 	return err
 }
 
-// RPC 服务运行端口号
-var port int
-
-// Kitex 的运行时位置
-var kitexRuntimeDir string
-
 func main() {
 	cmd := command.NewCommand(consts.ServiceName, func() error {
-		if err := os.Setenv("KITEX_RUNTIME_ROOT", kitexRuntimeDir); err != nil {
+		if err := os.Setenv("KITEX_RUNTIME_ROOT", cfg.KitexRuntimeDir); err != nil {
 			return err
 		}
-		if err := os.Setenv("KITEX_LOG_DIR", kitexRuntimeDir+"/log"); err != nil {
+		if err := os.Setenv("KITEX_LOG_DIR", cfg.KitexRuntimeDir+"/log"); err != nil {
 			return err
 		}
 		return run()
 	})
-	cmd.PersistentFlags().IntVarP(&port, "port", "p", 8080, "指定服务运行的端口号")
-	homeDir, err := os.Getwd()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(-1)
-	}
-	cmd.PersistentFlags().StringVar(&kitexRuntimeDir, "kitex-runtime-root", homeDir+"/_output", "指定 Kitex 运行目录")
+	cfg.Init(cmd.PersistentFlags())
 	if err := cmd.Execute(); err != nil {
 		os.Exit(-1)
 	}
