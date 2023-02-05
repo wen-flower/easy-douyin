@@ -2,6 +2,7 @@ package rpc
 
 import (
 	"context"
+
 	"github.com/cloudwego/kitex/client"
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	etcd "github.com/kitex-contrib/registry-etcd"
@@ -39,8 +40,45 @@ func CheckUser(ctx context.Context, param *user.CheckUserParam) (*int64, error) 
 	return resp.UserId, nil
 }
 
+// QueryUser 调用查询用户信息 RPC 服务
 func QueryUser(ctx context.Context, param *user.QueryUserParam) ([]*common.UserInfo, error) {
 	resp, err := userClient.QueryUser(ctx, param)
+	if err != nil {
+		return nil, err
+	}
+	if err = parseRpcResponse(resp.BaseResp); err != nil {
+		return nil, err
+	}
+	return resp.UserList, nil
+}
+
+// FollowUser 调用关注用户 RPC 服务
+func FollowUser(ctx context.Context, param *user.FollowUserParam) error {
+	resp, err := userClient.FollowUser(ctx, param)
+	if err != nil {
+		return err
+	}
+	if err = parseRpcResponse(resp.BaseResp); err != nil {
+		return err
+	}
+	return nil
+}
+
+// FollowList 调用查询用户关注列表 RPC 服务
+func FollowList(ctx context.Context, param *user.FollowListParam) ([]*common.UserInfo, error) {
+	resp, err := userClient.FollowList(ctx, param)
+	if err != nil {
+		return nil, err
+	}
+	if err = parseRpcResponse(resp.BaseResp); err != nil {
+		return nil, err
+	}
+	return resp.UserList, nil
+}
+
+// FollowerList 调用查询用户关注列表 RPC 服务
+func FollowerList(ctx context.Context, param *user.FollowerListParam) ([]*common.UserInfo, error) {
+	resp, err := userClient.FollowerList(ctx, param)
 	if err != nil {
 		return nil, err
 	}

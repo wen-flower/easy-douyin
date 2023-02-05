@@ -18,5 +18,12 @@ func Register(h *server.Hertz) {
 			_user.POST("/login", handler.Login)
 			_user.POST("/register", handler.Register)
 		}
+
+		_relation := _douyin.Group("/relation", mw.JwtMiddleware.MiddlewareFunc())
+		{
+			_relation.GET("/follow/list", handler.FollowList)
+			_relation.GET("/follower/list", handler.FollowerList)
+			_relation.POST("/action", handler.FollowAction)
+		}
 	}
 }

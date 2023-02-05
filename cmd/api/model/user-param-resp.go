@@ -34,7 +34,7 @@ type RegisterResp struct {
 
 // UserInfoParam 获取用户信息参数
 type UserInfoParam struct {
-	UserId int64 `json:"user_id" query:"user_id" vt:"(@:$ > 0; msg:'用户ID参数错误')"`
+	UserId int64 `json:"user_id" query:"user_id" vd:"@:$ > 0; msg:'用户ID参数错误'"`
 }
 
 // UserInfoResp 获取用户信息响应数据

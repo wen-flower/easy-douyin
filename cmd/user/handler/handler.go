@@ -44,7 +44,7 @@ func parseUserInfoList(users []model.User, followList []model.Follow) []*common.
 	followMap := modelFollowToMap(followList)
 	for _, _user := range users {
 		resp = append(resp, &common.UserInfo{
-			FollowCount:   _user.FollowerCount,
+			FollowCount:   _user.FollowCount,
 			FollowerCount: _user.FollowerCount,
 			Id:            _user.UID,
 			Followed:      followMap[_user.UID],

@@ -7,7 +7,7 @@ import (
 
 func InitHertzValidator() {
 	CustomBindErrFunc := func(failField, msg string) error {
-		return errno.UsernameAlreadyExistErr
+		return errno.ParamBindingErr
 	}
 
 	CustomValidateErrFunc := func(failField, msg string) error {

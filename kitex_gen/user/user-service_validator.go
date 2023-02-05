@@ -54,3 +54,36 @@ func (p *QueryUserResp) IsValid() error {
 	}
 	return nil
 }
+func (p *FollowUserParam) IsValid() error {
+	return nil
+}
+func (p *FollowUserResp) IsValid() error {
+	if p.BaseResp != nil {
+		if err := p.BaseResp.IsValid(); err != nil {
+			return fmt.Errorf("filed BaseResp not valid, %w", err)
+		}
+	}
+	return nil
+}
+func (p *FollowListParam) IsValid() error {
+	return nil
+}
+func (p *FollowListResp) IsValid() error {
+	if p.BaseResp != nil {
+		if err := p.BaseResp.IsValid(); err != nil {
+			return fmt.Errorf("filed BaseResp not valid, %w", err)
+		}
+	}
+	return nil
+}
+func (p *FollowerListParam) IsValid() error {
+	return nil
+}
+func (p *FollowerListResp) IsValid() error {
+	if p.BaseResp != nil {
+		if err := p.BaseResp.IsValid(); err != nil {
+			return fmt.Errorf("filed BaseResp not valid, %w", err)
+		}
+	}
+	return nil
+}

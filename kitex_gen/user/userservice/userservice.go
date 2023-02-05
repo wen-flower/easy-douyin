@@ -19,9 +19,12 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "UserService"
 	handlerType := (*user.UserService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"CreateUser": kitex.NewMethodInfo(createUserHandler, newUserServiceCreateUserArgs, newUserServiceCreateUserResult, false),
-		"CheckUser":  kitex.NewMethodInfo(checkUserHandler, newUserServiceCheckUserArgs, newUserServiceCheckUserResult, false),
-		"QueryUser":  kitex.NewMethodInfo(queryUserHandler, newUserServiceQueryUserArgs, newUserServiceQueryUserResult, false),
+		"CreateUser":   kitex.NewMethodInfo(createUserHandler, newUserServiceCreateUserArgs, newUserServiceCreateUserResult, false),
+		"CheckUser":    kitex.NewMethodInfo(checkUserHandler, newUserServiceCheckUserArgs, newUserServiceCheckUserResult, false),
+		"QueryUser":    kitex.NewMethodInfo(queryUserHandler, newUserServiceQueryUserArgs, newUserServiceQueryUserResult, false),
+		"FollowUser":   kitex.NewMethodInfo(followUserHandler, newUserServiceFollowUserArgs, newUserServiceFollowUserResult, false),
+		"FollowList":   kitex.NewMethodInfo(followListHandler, newUserServiceFollowListArgs, newUserServiceFollowListResult, false),
+		"FollowerList": kitex.NewMethodInfo(followerListHandler, newUserServiceFollowerListArgs, newUserServiceFollowerListResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "user",
@@ -91,6 +94,60 @@ func newUserServiceQueryUserResult() interface{} {
 	return user.NewUserServiceQueryUserResult()
 }
 
+func followUserHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceFollowUserArgs)
+	realResult := result.(*user.UserServiceFollowUserResult)
+	success, err := handler.(user.UserService).FollowUser(ctx, realArg.Param)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserServiceFollowUserArgs() interface{} {
+	return user.NewUserServiceFollowUserArgs()
+}
+
+func newUserServiceFollowUserResult() interface{} {
+	return user.NewUserServiceFollowUserResult()
+}
+
+func followListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceFollowListArgs)
+	realResult := result.(*user.UserServiceFollowListResult)
+	success, err := handler.(user.UserService).FollowList(ctx, realArg.Param)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserServiceFollowListArgs() interface{} {
+	return user.NewUserServiceFollowListArgs()
+}
+
+func newUserServiceFollowListResult() interface{} {
+	return user.NewUserServiceFollowListResult()
+}
+
+func followerListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceFollowerListArgs)
+	realResult := result.(*user.UserServiceFollowerListResult)
+	success, err := handler.(user.UserService).FollowerList(ctx, realArg.Param)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserServiceFollowerListArgs() interface{} {
+	return user.NewUserServiceFollowerListArgs()
+}
+
+func newUserServiceFollowerListResult() interface{} {
+	return user.NewUserServiceFollowerListResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -126,6 +183,36 @@ func (p *kClient) QueryUser(ctx context.Context, param *user.QueryUserParam) (r 
 	_args.Param = param
 	var _result user.UserServiceQueryUserResult
 	if err = p.c.Call(ctx, "QueryUser", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) FollowUser(ctx context.Context, param *user.FollowUserParam) (r *user.FollowUserResp, err error) {
+	var _args user.UserServiceFollowUserArgs
+	_args.Param = param
+	var _result user.UserServiceFollowUserResult
+	if err = p.c.Call(ctx, "FollowUser", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) FollowList(ctx context.Context, param *user.FollowListParam) (r *user.FollowListResp, err error) {
+	var _args user.UserServiceFollowListArgs
+	_args.Param = param
+	var _result user.UserServiceFollowListResult
+	if err = p.c.Call(ctx, "FollowList", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) FollowerList(ctx context.Context, param *user.FollowerListParam) (r *user.FollowerListResp, err error) {
+	var _args user.UserServiceFollowerListArgs
+	_args.Param = param
+	var _result user.UserServiceFollowerListResult
+	if err = p.c.Call(ctx, "FollowerList", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

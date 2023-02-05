@@ -14,6 +14,9 @@ type Client interface {
 	CreateUser(ctx context.Context, param *user.CreateUserParam, callOptions ...callopt.Option) (r *user.CreateUserResp, err error)
 	CheckUser(ctx context.Context, param *user.CheckUserParam, callOptions ...callopt.Option) (r *user.CheckUserResp, err error)
 	QueryUser(ctx context.Context, param *user.QueryUserParam, callOptions ...callopt.Option) (r *user.QueryUserResp, err error)
+	FollowUser(ctx context.Context, param *user.FollowUserParam, callOptions ...callopt.Option) (r *user.FollowUserResp, err error)
+	FollowList(ctx context.Context, param *user.FollowListParam, callOptions ...callopt.Option) (r *user.FollowListResp, err error)
+	FollowerList(ctx context.Context, param *user.FollowerListParam, callOptions ...callopt.Option) (r *user.FollowerListResp, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -58,4 +61,19 @@ func (p *kUserServiceClient) CheckUser(ctx context.Context, param *user.CheckUse
 func (p *kUserServiceClient) QueryUser(ctx context.Context, param *user.QueryUserParam, callOptions ...callopt.Option) (r *user.QueryUserResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.QueryUser(ctx, param)
+}
+
+func (p *kUserServiceClient) FollowUser(ctx context.Context, param *user.FollowUserParam, callOptions ...callopt.Option) (r *user.FollowUserResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.FollowUser(ctx, param)
+}
+
+func (p *kUserServiceClient) FollowList(ctx context.Context, param *user.FollowListParam, callOptions ...callopt.Option) (r *user.FollowListResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.FollowList(ctx, param)
+}
+
+func (p *kUserServiceClient) FollowerList(ctx context.Context, param *user.FollowerListParam, callOptions ...callopt.Option) (r *user.FollowerListResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.FollowerList(ctx, param)
 }
