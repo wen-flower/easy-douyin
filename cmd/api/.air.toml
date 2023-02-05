@@ -3,7 +3,7 @@
 # 工作目录
 # . 或 绝对路径，请注意以下目录必须在 root 目录下
 root = "."
-tmp_dir = "_output/air_tmp"
+tmp_dir = "_output"
 
 [build]
 # 构建执行的命令

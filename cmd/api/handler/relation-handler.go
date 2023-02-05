@@ -5,9 +5,9 @@ import (
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/wen-flower/easy-douyin/cmd/api/model"
-	"github.com/wen-flower/easy-douyin/cmd/api/rpc"
 	"github.com/wen-flower/easy-douyin/cmd/api/utils"
 	"github.com/wen-flower/easy-douyin/kitex_gen/user"
+	"github.com/wen-flower/easy-douyin/pkg/rpc/userrpc"
 )
 
 // FollowAction 关注操作
@@ -21,7 +21,7 @@ func FollowAction(ctx context.Context, req *app.RequestContext) {
 		return
 	}
 
-	err = rpc.FollowUser(ctx, &user.FollowUserParam{
+	err = userrpc.FollowUser(ctx, &user.FollowUserParam{
 		LoggedUserId: *utils.GetLoggedInUID(req),
 		FollowUserId: param.ToUserId,
 		Action:       param.Action == 1,
@@ -47,8 +47,8 @@ func FollowList(ctx context.Context, req *app.RequestContext) {
 		return
 	}
 
-	userInfos, err := rpc.FollowList(ctx, &user.FollowListParam{
-		LoggedUserId: *utils.GetLoggedInUID(req),
+	userInfos, err := userrpc.FollowList(ctx, &user.FollowListParam{
+		LoggedUserId: utils.GetLoggedInUID(req),
 		LookUserId:   param.LookUserId,
 	})
 	if err != nil {
@@ -74,8 +74,8 @@ func FollowerList(ctx context.Context, req *app.RequestContext) {
 		return
 	}
 
-	userInfos, err := rpc.FollowerList(ctx, &user.FollowerListParam{
-		LoggedUserId: *utils.GetLoggedInUID(req),
+	userInfos, err := userrpc.FollowerList(ctx, &user.FollowerListParam{
+		LoggedUserId: utils.GetLoggedInUID(req),
 		LookUserId:   param.LookUserId,
 	})
 	if err != nil {

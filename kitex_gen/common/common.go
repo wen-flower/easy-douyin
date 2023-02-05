@@ -630,3 +630,588 @@ func (p *UserInfo) Field5DeepEqual(src string) bool {
 	}
 	return true
 }
+
+type VideoInfo struct {
+	Author        *UserInfo `thrift:"author,1" frugal:"1,default,UserInfo" json:"author"`
+	CommentCount  int64     `thrift:"comment_count,2" frugal:"2,default,i64" json:"comment_count,string"`
+	CoverUrl      string    `thrift:"cover_url,3" frugal:"3,default,string" json:"cover_url"`
+	FavoriteCount int64     `thrift:"favorite_count,4" frugal:"4,default,i64" json:"favorite_count,string"`
+	Id            int64     `thrift:"id,5" frugal:"5,default,i64" json:"id,string"`
+	Favorited     bool      `thrift:"favorited,6" frugal:"6,default,bool" json:"is_favorite"`
+	PlayUrl       string    `thrift:"play_url,7" frugal:"7,default,string" json:"play_url"`
+	Title         string    `thrift:"title,8" frugal:"8,default,string" json:"title"`
+}
+
+func NewVideoInfo() *VideoInfo {
+	return &VideoInfo{}
+}
+
+func (p *VideoInfo) InitDefault() {
+	*p = VideoInfo{}
+}
+
+var VideoInfo_Author_DEFAULT *UserInfo
+
+func (p *VideoInfo) GetAuthor() (v *UserInfo) {
+	if !p.IsSetAuthor() {
+		return VideoInfo_Author_DEFAULT
+	}
+	return p.Author
+}
+
+func (p *VideoInfo) GetCommentCount() (v int64) {
+	return p.CommentCount
+}
+
+func (p *VideoInfo) GetCoverUrl() (v string) {
+	return p.CoverUrl
+}
+
+func (p *VideoInfo) GetFavoriteCount() (v int64) {
+	return p.FavoriteCount
+}
+
+func (p *VideoInfo) GetId() (v int64) {
+	return p.Id
+}
+
+func (p *VideoInfo) GetFavorited() (v bool) {
+	return p.Favorited
+}
+
+func (p *VideoInfo) GetPlayUrl() (v string) {
+	return p.PlayUrl
+}
+
+func (p *VideoInfo) GetTitle() (v string) {
+	return p.Title
+}
+func (p *VideoInfo) SetAuthor(val *UserInfo) {
+	p.Author = val
+}
+func (p *VideoInfo) SetCommentCount(val int64) {
+	p.CommentCount = val
+}
+func (p *VideoInfo) SetCoverUrl(val string) {
+	p.CoverUrl = val
+}
+func (p *VideoInfo) SetFavoriteCount(val int64) {
+	p.FavoriteCount = val
+}
+func (p *VideoInfo) SetId(val int64) {
+	p.Id = val
+}
+func (p *VideoInfo) SetFavorited(val bool) {
+	p.Favorited = val
+}
+func (p *VideoInfo) SetPlayUrl(val string) {
+	p.PlayUrl = val
+}
+func (p *VideoInfo) SetTitle(val string) {
+	p.Title = val
+}
+
+var fieldIDToName_VideoInfo = map[int16]string{
+	1: "author",
+	2: "comment_count",
+	3: "cover_url",
+	4: "favorite_count",
+	5: "id",
+	6: "favorited",
+	7: "play_url",
+	8: "title",
+}
+
+func (p *VideoInfo) IsSetAuthor() bool {
+	return p.Author != nil
+}
+
+func (p *VideoInfo) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 3:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 4:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 5:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField5(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 6:
+			if fieldTypeId == thrift.BOOL {
+				if err = p.ReadField6(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 7:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField7(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 8:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField8(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_VideoInfo[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *VideoInfo) ReadField1(iprot thrift.TProtocol) error {
+	p.Author = NewUserInfo()
+	if err := p.Author.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *VideoInfo) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.CommentCount = v
+	}
+	return nil
+}
+
+func (p *VideoInfo) ReadField3(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.CoverUrl = v
+	}
+	return nil
+}
+
+func (p *VideoInfo) ReadField4(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.FavoriteCount = v
+	}
+	return nil
+}
+
+func (p *VideoInfo) ReadField5(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.Id = v
+	}
+	return nil
+}
+
+func (p *VideoInfo) ReadField6(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadBool(); err != nil {
+		return err
+	} else {
+		p.Favorited = v
+	}
+	return nil
+}
+
+func (p *VideoInfo) ReadField7(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.PlayUrl = v
+	}
+	return nil
+}
+
+func (p *VideoInfo) ReadField8(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Title = v
+	}
+	return nil
+}
+
+func (p *VideoInfo) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("VideoInfo"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+		if err = p.writeField4(oprot); err != nil {
+			fieldId = 4
+			goto WriteFieldError
+		}
+		if err = p.writeField5(oprot); err != nil {
+			fieldId = 5
+			goto WriteFieldError
+		}
+		if err = p.writeField6(oprot); err != nil {
+			fieldId = 6
+			goto WriteFieldError
+		}
+		if err = p.writeField7(oprot); err != nil {
+			fieldId = 7
+			goto WriteFieldError
+		}
+		if err = p.writeField8(oprot); err != nil {
+			fieldId = 8
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *VideoInfo) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("author", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Author.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *VideoInfo) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("comment_count", thrift.I64, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.CommentCount); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *VideoInfo) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("cover_url", thrift.STRING, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.CoverUrl); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *VideoInfo) writeField4(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("favorite_count", thrift.I64, 4); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.FavoriteCount); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
+}
+
+func (p *VideoInfo) writeField5(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("id", thrift.I64, 5); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.Id); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
+}
+
+func (p *VideoInfo) writeField6(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("favorited", thrift.BOOL, 6); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteBool(p.Favorited); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
+}
+
+func (p *VideoInfo) writeField7(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("play_url", thrift.STRING, 7); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.PlayUrl); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
+}
+
+func (p *VideoInfo) writeField8(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("title", thrift.STRING, 8); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Title); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
+}
+
+func (p *VideoInfo) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("VideoInfo(%+v)", *p)
+}
+
+func (p *VideoInfo) DeepEqual(ano *VideoInfo) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Author) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.CommentCount) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.CoverUrl) {
+		return false
+	}
+	if !p.Field4DeepEqual(ano.FavoriteCount) {
+		return false
+	}
+	if !p.Field5DeepEqual(ano.Id) {
+		return false
+	}
+	if !p.Field6DeepEqual(ano.Favorited) {
+		return false
+	}
+	if !p.Field7DeepEqual(ano.PlayUrl) {
+		return false
+	}
+	if !p.Field8DeepEqual(ano.Title) {
+		return false
+	}
+	return true
+}
+
+func (p *VideoInfo) Field1DeepEqual(src *UserInfo) bool {
+
+	if !p.Author.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+func (p *VideoInfo) Field2DeepEqual(src int64) bool {
+
+	if p.CommentCount != src {
+		return false
+	}
+	return true
+}
+func (p *VideoInfo) Field3DeepEqual(src string) bool {
+
+	if strings.Compare(p.CoverUrl, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *VideoInfo) Field4DeepEqual(src int64) bool {
+
+	if p.FavoriteCount != src {
+		return false
+	}
+	return true
+}
+func (p *VideoInfo) Field5DeepEqual(src int64) bool {
+
+	if p.Id != src {
+		return false
+	}
+	return true
+}
+func (p *VideoInfo) Field6DeepEqual(src bool) bool {
+
+	if p.Favorited != src {
+		return false
+	}
+	return true
+}
+func (p *VideoInfo) Field7DeepEqual(src string) bool {
+
+	if strings.Compare(p.PlayUrl, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *VideoInfo) Field8DeepEqual(src string) bool {
+
+	if strings.Compare(p.Title, src) != 0 {
+		return false
+	}
+	return true
+}

@@ -72,6 +72,9 @@ replace_files_var() {
       fi
     fi
   done
+
+  # 处理隐藏文件
+  replace_file_var "$CMD_DIR/.air.toml"
 }
 
 # 创建服务相关的文件和目录

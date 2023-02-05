@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/wen-flower/easy-douyin/cmd/user/dal/db"
+	"github.com/wen-flower/easy-douyin/cmd/user/model"
 	"github.com/wen-flower/easy-douyin/kitex_gen/common"
 	"github.com/wen-flower/easy-douyin/kitex_gen/user"
 )
@@ -42,10 +43,13 @@ func followerList(ctx context.Context, param *user.FollowerListParam) ([]*common
 
 	users, err := db.QueryUser(ctx, userIds)
 
-	// 查询登录用户和查询用户粉丝之间的关系
-	followList, err := db.QueryFollow(ctx, param.LoggedUserId, userIds)
-	if err != nil {
-		return nil, err
+	var followList []model.Follow
+	if param.LoggedUserId != nil {
+		// 查询登录用户和查询用户粉丝之间的关系
+		followList, err = db.QueryFollow(ctx, *param.LoggedUserId, userIds)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return parseUserInfoList(users, followList), nil

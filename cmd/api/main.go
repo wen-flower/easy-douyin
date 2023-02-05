@@ -3,24 +3,29 @@ package main
 import (
 	"context"
 	"fmt"
+	"os"
+
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/hertz-contrib/obs-opentelemetry/tracing"
 	"github.com/hertz-contrib/pprof"
 	"github.com/wen-flower/easy-douyin/cmd/api/cfg"
 	"github.com/wen-flower/easy-douyin/cmd/api/mw"
 	"github.com/wen-flower/easy-douyin/cmd/api/router"
-	"github.com/wen-flower/easy-douyin/cmd/api/rpc"
 	"github.com/wen-flower/easy-douyin/cmd/api/utils"
 	"github.com/wen-flower/easy-douyin/cmd/user/consts"
 	"github.com/wen-flower/easy-douyin/pkg/command"
 	"github.com/wen-flower/easy-douyin/pkg/mlog/hertzlog"
 	"github.com/wen-flower/easy-douyin/pkg/mlog/kitexlog"
-	"os"
+	"github.com/wen-flower/easy-douyin/pkg/rpc"
+	"github.com/wen-flower/easy-douyin/pkg/rpc/userrpc"
+	"github.com/wen-flower/easy-douyin/pkg/rpc/videorpc"
 )
 
 // 初始化 RPC 客户端、日志框架等
 func initialize() {
-	rpc.Init()
+	rpc.Init(consts.ServiceName)
+	userrpc.Init()
+	videorpc.Init()
 
 	mw.InitJWT()
 

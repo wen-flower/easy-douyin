@@ -27,3 +27,11 @@ func (p *BaseResp) IsValid() error {
 func (p *UserInfo) IsValid() error {
 	return nil
 }
+func (p *VideoInfo) IsValid() error {
+	if p.Author != nil {
+		if err := p.Author.IsValid(); err != nil {
+			return fmt.Errorf("filed Author not valid, %w", err)
+		}
+	}
+	return nil
+}

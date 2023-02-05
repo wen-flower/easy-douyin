@@ -1,7 +1,9 @@
 package handler
 
 import (
+	"github.com/wen-flower/easy-douyin/kitex_gen/common"
 	#SERVICE_PACKAGE# "github.com/wen-flower/easy-douyin/kitex_gen/#SERVICE_PACKAGE#"
+	"github.com/wen-flower/easy-douyin/pkg/errno"
 )
 
 // #SERVICE_NAME_CAMEL_CASE#Impl implements the last service interface defined in the IDL.
@@ -9,3 +11,18 @@ type #SERVICE_NAME_CAMEL_CASE#Impl struct{}
 
 // 检查 #SERVICE_NAME_CAMEL_CASE#Impl 是否实现了 #SERVICE_PACKAGE#.#SERVICE_NAME_CAMEL_CASE# 接口
 var _ #SERVICE_PACKAGE#.#SERVICE_NAME_CAMEL_CASE# = (*#SERVICE_NAME_CAMEL_CASE#Impl)(nil)
+
+// 提取出错误的处理流程
+func errProcess(baseResp **common.BaseResp, err *error) {
+	var resp common.BaseResp
+	if *err != nil {
+		e := errno.ConvertErr(*err)
+		resp.Msg = e.Msg()
+		resp.Code = e.Code()
+		*err = nil
+	} else {
+		resp.Code = errno.Success.Code()
+		resp.Msg = errno.Success.Msg()
+	}
+	*baseResp = &resp
+}

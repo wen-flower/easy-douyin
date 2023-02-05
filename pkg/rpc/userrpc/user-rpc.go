@@ -1,4 +1,4 @@
-package rpc
+package userrpc
 
 import (
 	"context"
@@ -12,6 +12,7 @@ import (
 	"github.com/wen-flower/easy-douyin/kitex_gen/user/userservice"
 	"github.com/wen-flower/easy-douyin/pkg/constant"
 	"github.com/wen-flower/easy-douyin/pkg/mw"
+	"github.com/wen-flower/easy-douyin/pkg/rpc"
 )
 
 var userClient userservice.Client
@@ -22,7 +23,7 @@ func CreateUser(ctx context.Context, param *user.CreateUserParam) (*int64, error
 	if err != nil {
 		return nil, err
 	}
-	if err = parseRpcResponse(resp.BaseResp); err != nil {
+	if err = rpc.ParseRpcResponse(resp.BaseResp); err != nil {
 		return nil, err
 	}
 	return resp.UserId, nil
@@ -34,7 +35,7 @@ func CheckUser(ctx context.Context, param *user.CheckUserParam) (*int64, error) 
 	if err != nil {
 		return nil, err
 	}
-	if err = parseRpcResponse(resp.BaseResp); err != nil {
+	if err = rpc.ParseRpcResponse(resp.BaseResp); err != nil {
 		return nil, err
 	}
 	return resp.UserId, nil
@@ -46,7 +47,7 @@ func QueryUser(ctx context.Context, param *user.QueryUserParam) ([]*common.UserI
 	if err != nil {
 		return nil, err
 	}
-	if err = parseRpcResponse(resp.BaseResp); err != nil {
+	if err = rpc.ParseRpcResponse(resp.BaseResp); err != nil {
 		return nil, err
 	}
 	return resp.UserList, nil
@@ -58,7 +59,7 @@ func FollowUser(ctx context.Context, param *user.FollowUserParam) error {
 	if err != nil {
 		return err
 	}
-	if err = parseRpcResponse(resp.BaseResp); err != nil {
+	if err = rpc.ParseRpcResponse(resp.BaseResp); err != nil {
 		return err
 	}
 	return nil
@@ -70,7 +71,7 @@ func FollowList(ctx context.Context, param *user.FollowListParam) ([]*common.Use
 	if err != nil {
 		return nil, err
 	}
-	if err = parseRpcResponse(resp.BaseResp); err != nil {
+	if err = rpc.ParseRpcResponse(resp.BaseResp); err != nil {
 		return nil, err
 	}
 	return resp.UserList, nil
@@ -82,14 +83,14 @@ func FollowerList(ctx context.Context, param *user.FollowerListParam) ([]*common
 	if err != nil {
 		return nil, err
 	}
-	if err = parseRpcResponse(resp.BaseResp); err != nil {
+	if err = rpc.ParseRpcResponse(resp.BaseResp); err != nil {
 		return nil, err
 	}
 	return resp.UserList, nil
 }
 
 // 初始化用户服务 PRC 客户端
-func initUser() {
+func Init() {
 	r, err := etcd.NewEtcdResolver([]string{constant.EtcdAddress})
 	if err != nil {
 		panic(err)
@@ -102,7 +103,7 @@ func initUser() {
 		client.WithMiddleware(mw.CommonMiddleware),
 		client.WithInstanceMW(mw.ClientMiddleware),
 		client.WithSuite(tracing.NewClientSuite()),
-		client.WithClientBasicInfo(clientBasicInfo),
+		client.WithClientBasicInfo(rpc.ClientBasicInfo),
 	)
 	if err != nil {
 		panic(err)

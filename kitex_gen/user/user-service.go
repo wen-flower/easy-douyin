@@ -951,7 +951,7 @@ func (p *CheckUserResp) Field2DeepEqual(src *int64) bool {
 }
 
 type QueryUserParam struct {
-	LoggedUserId int64   `thrift:"logged_user_id,1" frugal:"1,default,i64" json:"logged_user_id"`
+	LoggedUserId *int64  `thrift:"logged_user_id,1,optional" frugal:"1,optional,i64" json:"logged_user_id,omitempty"`
 	UserIds      []int64 `thrift:"user_ids,2" frugal:"2,default,list<i64>" json:"user_ids"`
 }
 
@@ -963,14 +963,19 @@ func (p *QueryUserParam) InitDefault() {
 	*p = QueryUserParam{}
 }
 
+var QueryUserParam_LoggedUserId_DEFAULT int64
+
 func (p *QueryUserParam) GetLoggedUserId() (v int64) {
-	return p.LoggedUserId
+	if !p.IsSetLoggedUserId() {
+		return QueryUserParam_LoggedUserId_DEFAULT
+	}
+	return *p.LoggedUserId
 }
 
 func (p *QueryUserParam) GetUserIds() (v []int64) {
 	return p.UserIds
 }
-func (p *QueryUserParam) SetLoggedUserId(val int64) {
+func (p *QueryUserParam) SetLoggedUserId(val *int64) {
 	p.LoggedUserId = val
 }
 func (p *QueryUserParam) SetUserIds(val []int64) {
@@ -980,6 +985,10 @@ func (p *QueryUserParam) SetUserIds(val []int64) {
 var fieldIDToName_QueryUserParam = map[int16]string{
 	1: "logged_user_id",
 	2: "user_ids",
+}
+
+func (p *QueryUserParam) IsSetLoggedUserId() bool {
+	return p.LoggedUserId != nil
 }
 
 func (p *QueryUserParam) Read(iprot thrift.TProtocol) (err error) {
@@ -1055,7 +1064,7 @@ func (p *QueryUserParam) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.LoggedUserId = v
+		p.LoggedUserId = &v
 	}
 	return nil
 }
@@ -1116,14 +1125,16 @@ WriteStructEndError:
 }
 
 func (p *QueryUserParam) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("logged_user_id", thrift.I64, 1); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI64(p.LoggedUserId); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+	if p.IsSetLoggedUserId() {
+		if err = oprot.WriteFieldBegin("logged_user_id", thrift.I64, 1); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(*p.LoggedUserId); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -1179,9 +1190,14 @@ func (p *QueryUserParam) DeepEqual(ano *QueryUserParam) bool {
 	return true
 }
 
-func (p *QueryUserParam) Field1DeepEqual(src int64) bool {
+func (p *QueryUserParam) Field1DeepEqual(src *int64) bool {
 
-	if p.LoggedUserId != src {
+	if p.LoggedUserId == src {
+		return true
+	} else if p.LoggedUserId == nil || src == nil {
+		return false
+	}
+	if *p.LoggedUserId != *src {
 		return false
 	}
 	return true
@@ -1911,8 +1927,8 @@ func (p *FollowUserResp) Field1DeepEqual(src *common.BaseResp) bool {
 }
 
 type FollowListParam struct {
-	LoggedUserId int64 `thrift:"logged_user_id,1" frugal:"1,default,i64" json:"logged_user_id"`
-	LookUserId   int64 `thrift:"look_user_id,2" frugal:"2,default,i64" json:"look_user_id"`
+	LoggedUserId *int64 `thrift:"logged_user_id,1,optional" frugal:"1,optional,i64" json:"logged_user_id,omitempty"`
+	LookUserId   int64  `thrift:"look_user_id,2" frugal:"2,default,i64" json:"look_user_id"`
 }
 
 func NewFollowListParam() *FollowListParam {
@@ -1923,14 +1939,19 @@ func (p *FollowListParam) InitDefault() {
 	*p = FollowListParam{}
 }
 
+var FollowListParam_LoggedUserId_DEFAULT int64
+
 func (p *FollowListParam) GetLoggedUserId() (v int64) {
-	return p.LoggedUserId
+	if !p.IsSetLoggedUserId() {
+		return FollowListParam_LoggedUserId_DEFAULT
+	}
+	return *p.LoggedUserId
 }
 
 func (p *FollowListParam) GetLookUserId() (v int64) {
 	return p.LookUserId
 }
-func (p *FollowListParam) SetLoggedUserId(val int64) {
+func (p *FollowListParam) SetLoggedUserId(val *int64) {
 	p.LoggedUserId = val
 }
 func (p *FollowListParam) SetLookUserId(val int64) {
@@ -1940,6 +1961,10 @@ func (p *FollowListParam) SetLookUserId(val int64) {
 var fieldIDToName_FollowListParam = map[int16]string{
 	1: "logged_user_id",
 	2: "look_user_id",
+}
+
+func (p *FollowListParam) IsSetLoggedUserId() bool {
+	return p.LoggedUserId != nil
 }
 
 func (p *FollowListParam) Read(iprot thrift.TProtocol) (err error) {
@@ -2015,7 +2040,7 @@ func (p *FollowListParam) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.LoggedUserId = v
+		p.LoggedUserId = &v
 	}
 	return nil
 }
@@ -2063,14 +2088,16 @@ WriteStructEndError:
 }
 
 func (p *FollowListParam) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("logged_user_id", thrift.I64, 1); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI64(p.LoggedUserId); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+	if p.IsSetLoggedUserId() {
+		if err = oprot.WriteFieldBegin("logged_user_id", thrift.I64, 1); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(*p.LoggedUserId); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -2118,9 +2145,14 @@ func (p *FollowListParam) DeepEqual(ano *FollowListParam) bool {
 	return true
 }
 
-func (p *FollowListParam) Field1DeepEqual(src int64) bool {
+func (p *FollowListParam) Field1DeepEqual(src *int64) bool {
 
-	if p.LoggedUserId != src {
+	if p.LoggedUserId == src {
+		return true
+	} else if p.LoggedUserId == nil || src == nil {
+		return false
+	}
+	if *p.LoggedUserId != *src {
 		return false
 	}
 	return true
@@ -2390,8 +2422,8 @@ func (p *FollowListResp) Field2DeepEqual(src []*common.UserInfo) bool {
 }
 
 type FollowerListParam struct {
-	LoggedUserId int64 `thrift:"logged_user_id,1" frugal:"1,default,i64" json:"logged_user_id"`
-	LookUserId   int64 `thrift:"look_user_id,2" frugal:"2,default,i64" json:"look_user_id"`
+	LoggedUserId *int64 `thrift:"logged_user_id,1,optional" frugal:"1,optional,i64" json:"logged_user_id,omitempty"`
+	LookUserId   int64  `thrift:"look_user_id,2" frugal:"2,default,i64" json:"look_user_id"`
 }
 
 func NewFollowerListParam() *FollowerListParam {
@@ -2402,14 +2434,19 @@ func (p *FollowerListParam) InitDefault() {
 	*p = FollowerListParam{}
 }
 
+var FollowerListParam_LoggedUserId_DEFAULT int64
+
 func (p *FollowerListParam) GetLoggedUserId() (v int64) {
-	return p.LoggedUserId
+	if !p.IsSetLoggedUserId() {
+		return FollowerListParam_LoggedUserId_DEFAULT
+	}
+	return *p.LoggedUserId
 }
 
 func (p *FollowerListParam) GetLookUserId() (v int64) {
 	return p.LookUserId
 }
-func (p *FollowerListParam) SetLoggedUserId(val int64) {
+func (p *FollowerListParam) SetLoggedUserId(val *int64) {
 	p.LoggedUserId = val
 }
 func (p *FollowerListParam) SetLookUserId(val int64) {
@@ -2419,6 +2456,10 @@ func (p *FollowerListParam) SetLookUserId(val int64) {
 var fieldIDToName_FollowerListParam = map[int16]string{
 	1: "logged_user_id",
 	2: "look_user_id",
+}
+
+func (p *FollowerListParam) IsSetLoggedUserId() bool {
+	return p.LoggedUserId != nil
 }
 
 func (p *FollowerListParam) Read(iprot thrift.TProtocol) (err error) {
@@ -2494,7 +2535,7 @@ func (p *FollowerListParam) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.LoggedUserId = v
+		p.LoggedUserId = &v
 	}
 	return nil
 }
@@ -2542,14 +2583,16 @@ WriteStructEndError:
 }
 
 func (p *FollowerListParam) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("logged_user_id", thrift.I64, 1); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI64(p.LoggedUserId); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+	if p.IsSetLoggedUserId() {
+		if err = oprot.WriteFieldBegin("logged_user_id", thrift.I64, 1); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(*p.LoggedUserId); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -2597,9 +2640,14 @@ func (p *FollowerListParam) DeepEqual(ano *FollowerListParam) bool {
 	return true
 }
 
-func (p *FollowerListParam) Field1DeepEqual(src int64) bool {
+func (p *FollowerListParam) Field1DeepEqual(src *int64) bool {
 
-	if p.LoggedUserId != src {
+	if p.LoggedUserId == src {
+		return true
+	} else if p.LoggedUserId == nil || src == nil {
+		return false
+	}
+	if *p.LoggedUserId != *src {
 		return false
 	}
 	return true

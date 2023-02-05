@@ -2,7 +2,9 @@ package handler
 
 import (
 	"context"
+
 	"github.com/wen-flower/easy-douyin/cmd/user/dal/db"
+	"github.com/wen-flower/easy-douyin/cmd/user/model"
 	"github.com/wen-flower/easy-douyin/kitex_gen/common"
 	"github.com/wen-flower/easy-douyin/kitex_gen/user"
 )
@@ -32,9 +34,12 @@ func queryUser(ctx context.Context, param *user.QueryUserParam) ([]*common.UserI
 	if err != nil {
 		return nil, err
 	}
-	followList, err := db.QueryFollow(ctx, param.LoggedUserId, param.UserIds)
-	if err != nil {
-		return nil, err
+	var followList []model.Follow
+	if param.LoggedUserId != nil {
+		followList, err = db.QueryFollow(ctx, *param.LoggedUserId, param.UserIds)
+		if err != nil {
+			return nil, err
+		}
 	}
 	return parseUserInfoList(users, followList), nil
 }

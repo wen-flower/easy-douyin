@@ -10,20 +10,18 @@ import (
 )
 
 // Init 初始化 RPC 客户端
-func Init() {
+func Init(serviceName string) {
 	provider.NewOpenTelemetryProvider(
 		provider.WithServiceName(consts.ServiceName),
 		provider.WithExportEndpoint(constant.ExportEndpoint),
 		provider.WithInsecure(),
 	)
-	initUser()
+	ClientBasicInfo.ServiceName = serviceName
 }
 
-var clientBasicInfo = &rpcinfo.EndpointBasicInfo{
-	ServiceName: consts.ServiceName,
-}
+var ClientBasicInfo = &rpcinfo.EndpointBasicInfo{}
 
-func parseRpcResponse(resp *common.BaseResp) error {
+func ParseRpcResponse(resp *common.BaseResp) error {
 	if resp.Code != 0 {
 		return errno.New(resp.Code, resp.Msg)
 	}

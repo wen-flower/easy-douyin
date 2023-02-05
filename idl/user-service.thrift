@@ -23,7 +23,7 @@ struct CheckUserResp {
 }
 
 struct QueryUserParam {
-    1: i64 logged_user_id // 登录用户的 ID
+    1: optional i64 logged_user_id // 登录用户的 ID
     2: list<i64> user_ids // 用户 ID 列表
 }
 
@@ -43,7 +43,7 @@ struct FollowUserResp {
 }
 
 struct FollowListParam {
-    1: i64 logged_user_id // 登录用户的 ID
+    1: optional i64 logged_user_id // 登录用户的 ID
     2: i64 look_user_id // 要查询用户的 ID
 }
 
@@ -53,7 +53,7 @@ struct FollowListResp {
 }
 
 struct FollowerListParam {
-    1: i64 logged_user_id // 登录用户的 ID
+    1: optional i64 logged_user_id // 登录用户的 ID
     2: i64 look_user_id // 要查询用户的 ID
 }
 

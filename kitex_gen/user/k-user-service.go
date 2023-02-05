@@ -829,8 +829,7 @@ func (p *QueryUserParam) FastReadField1(buf []byte) (int, error) {
 		return offset, err
 	} else {
 		offset += l
-
-		p.LoggedUserId = v
+		p.LoggedUserId = &v
 
 	}
 	return offset, nil
@@ -897,10 +896,12 @@ func (p *QueryUserParam) BLength() int {
 
 func (p *QueryUserParam) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "logged_user_id", thrift.I64, 1)
-	offset += bthrift.Binary.WriteI64(buf[offset:], p.LoggedUserId)
+	if p.IsSetLoggedUserId() {
+		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "logged_user_id", thrift.I64, 1)
+		offset += bthrift.Binary.WriteI64(buf[offset:], *p.LoggedUserId)
 
-	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	}
 	return offset
 }
 
@@ -923,10 +924,12 @@ func (p *QueryUserParam) fastWriteField2(buf []byte, binaryWriter bthrift.Binary
 
 func (p *QueryUserParam) field1Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("logged_user_id", thrift.I64, 1)
-	l += bthrift.Binary.I64Length(p.LoggedUserId)
+	if p.IsSetLoggedUserId() {
+		l += bthrift.Binary.FieldBeginLength("logged_user_id", thrift.I64, 1)
+		l += bthrift.Binary.I64Length(*p.LoggedUserId)
 
-	l += bthrift.Binary.FieldEndLength()
+		l += bthrift.Binary.FieldEndLength()
+	}
 	return l
 }
 
@@ -1584,8 +1587,7 @@ func (p *FollowListParam) FastReadField1(buf []byte) (int, error) {
 		return offset, err
 	} else {
 		offset += l
-
-		p.LoggedUserId = v
+		p.LoggedUserId = &v
 
 	}
 	return offset, nil
@@ -1636,10 +1638,12 @@ func (p *FollowListParam) BLength() int {
 
 func (p *FollowListParam) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "logged_user_id", thrift.I64, 1)
-	offset += bthrift.Binary.WriteI64(buf[offset:], p.LoggedUserId)
+	if p.IsSetLoggedUserId() {
+		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "logged_user_id", thrift.I64, 1)
+		offset += bthrift.Binary.WriteI64(buf[offset:], *p.LoggedUserId)
 
-	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	}
 	return offset
 }
 
@@ -1654,10 +1658,12 @@ func (p *FollowListParam) fastWriteField2(buf []byte, binaryWriter bthrift.Binar
 
 func (p *FollowListParam) field1Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("logged_user_id", thrift.I64, 1)
-	l += bthrift.Binary.I64Length(p.LoggedUserId)
+	if p.IsSetLoggedUserId() {
+		l += bthrift.Binary.FieldBeginLength("logged_user_id", thrift.I64, 1)
+		l += bthrift.Binary.I64Length(*p.LoggedUserId)
 
-	l += bthrift.Binary.FieldEndLength()
+		l += bthrift.Binary.FieldEndLength()
+	}
 	return l
 }
 
@@ -1960,8 +1966,7 @@ func (p *FollowerListParam) FastReadField1(buf []byte) (int, error) {
 		return offset, err
 	} else {
 		offset += l
-
-		p.LoggedUserId = v
+		p.LoggedUserId = &v
 
 	}
 	return offset, nil
@@ -2012,10 +2017,12 @@ func (p *FollowerListParam) BLength() int {
 
 func (p *FollowerListParam) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "logged_user_id", thrift.I64, 1)
-	offset += bthrift.Binary.WriteI64(buf[offset:], p.LoggedUserId)
+	if p.IsSetLoggedUserId() {
+		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "logged_user_id", thrift.I64, 1)
+		offset += bthrift.Binary.WriteI64(buf[offset:], *p.LoggedUserId)
 
-	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	}
 	return offset
 }
 
@@ -2030,10 +2037,12 @@ func (p *FollowerListParam) fastWriteField2(buf []byte, binaryWriter bthrift.Bin
 
 func (p *FollowerListParam) field1Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("logged_user_id", thrift.I64, 1)
-	l += bthrift.Binary.I64Length(p.LoggedUserId)
+	if p.IsSetLoggedUserId() {
+		l += bthrift.Binary.FieldBeginLength("logged_user_id", thrift.I64, 1)
+		l += bthrift.Binary.I64Length(*p.LoggedUserId)
 
-	l += bthrift.Binary.FieldEndLength()
+		l += bthrift.Binary.FieldEndLength()
+	}
 	return l
 }
 

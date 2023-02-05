@@ -23,7 +23,7 @@ var JwtMiddleware *jwtmw.HertzJWTMiddleware
 func InitJWT() {
 	JwtMiddleware, _ = jwtmw.New(&jwtmw.HertzJWTMiddleware{
 		Key:           []byte(consts.JwtSecretKey),
-		TokenLookup:   "header: Authorization, query: token", //cookie: jwt
+		TokenLookup:   "header: Authorization, query: token, form: token", //cookie: jwt
 		TokenHeadName: "Bearer",
 		TimeFunc:      time.Now,
 		Timeout:       time.Hour,
@@ -78,6 +78,9 @@ func InitJWT() {
 			default:
 				if errors.Is(e, jwt.ErrTokenExpired) {
 					return "登录过期"
+				}
+				if errors.Is(e, jwtmw.ErrEmptyFormToken) || errors.Is(e, jwtmw.ErrEmptyQueryToken) || errors.Is(e, jwtmw.ErrEmptyAuthHeader) {
+					return "请先登录"
 				}
 				hlog.CtxErrorf(ctx, "error = %v", t.Error())
 				return errno.ServiceErr.Msg()
