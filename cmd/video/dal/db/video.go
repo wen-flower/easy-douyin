@@ -30,3 +30,10 @@ func QueryVideoFeed(ctx context.Context, latestTime int64, size int) ([]model.Vi
 	).Limit(size).Find(&videoList).Error
 	return videoList, err
 }
+
+// QueryVideo 查询视频
+func QueryVideo(ctx context.Context, videoIds []int64) ([]model.Video, error) {
+	var resp []model.Video
+	err := DB.WithContext(ctx).Where(msql.In(model.VideoVid), videoIds).Find(&resp).Error
+	return resp, err
+}

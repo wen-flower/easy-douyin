@@ -35,3 +35,11 @@ func (p *VideoInfo) IsValid() error {
 	}
 	return nil
 }
+func (p *CommentInfo) IsValid() error {
+	if p.User != nil {
+		if err := p.User.IsValid(); err != nil {
+			return fmt.Errorf("filed User not valid, %w", err)
+		}
+	}
+	return nil
+}

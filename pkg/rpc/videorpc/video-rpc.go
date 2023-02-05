@@ -50,6 +50,60 @@ func VideoFeed(ctx context.Context, param *video.VideoFeedParam) ([]*common.Vide
 	return resp.VideoList, nil
 }
 
+// FavoriteVideo 调用点赞视频 RPC 服务
+func FavoriteVideo(ctx context.Context, param *video.FavoriteVideoParam) error {
+	resp, err := videoClient.FavoriteVideo(ctx, param)
+	if err != nil {
+		return err
+	}
+	return rpc.ParseRpcResponse(resp.BaseResp)
+}
+
+// FavoriteList 调用点赞列表 RPC 服务
+func FavoriteList(ctx context.Context, param *video.FavoriteListParam) ([]*common.VideoInfo, error) {
+	resp, err := videoClient.FavoriteList(ctx, param)
+	if err != nil {
+		return nil, err
+	}
+	if err = rpc.ParseRpcResponse(resp.BaseResp); err != nil {
+		return nil, err
+	}
+	return resp.VideoList, nil
+}
+
+// CommentVideo 调用评论视频 RPC 服务
+func CommentVideo(ctx context.Context, param *video.CommentVideoParam) (*common.CommentInfo, error) {
+	resp, err := videoClient.CommentVideo(ctx, param)
+	if err != nil {
+		return nil, err
+	}
+	if err = rpc.ParseRpcResponse(resp.BaseResp); err != nil {
+		return nil, err
+	}
+	return resp.Comment, nil
+}
+
+// DeleteComment 调用删除评论 RPC 服务
+func DeleteComment(ctx context.Context, param *video.DeleteCommentParam) error {
+	resp, err := videoClient.DeleteComment(ctx, param)
+	if err != nil {
+		return err
+	}
+	return rpc.ParseRpcResponse(resp.BaseResp)
+}
+
+// CommentList 调用评论视频 RPC 服务
+func CommentList(ctx context.Context, param *video.CommentListParam) ([]*common.CommentInfo, error) {
+	resp, err := videoClient.CommentList(ctx, param)
+	if err != nil {
+		return nil, err
+	}
+	if err = rpc.ParseRpcResponse(resp.BaseResp); err != nil {
+		return nil, err
+	}
+	return resp.CommentList, nil
+}
+
 // 初始化用户服务 PRC 客户端
 func Init() {
 	r, err := etcd.NewEtcdResolver([]string{constant.EtcdAddress})

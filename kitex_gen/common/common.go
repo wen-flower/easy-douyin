@@ -1215,3 +1215,352 @@ func (p *VideoInfo) Field8DeepEqual(src string) bool {
 	}
 	return true
 }
+
+type CommentInfo struct {
+	Content    string    `thrift:"content,1" frugal:"1,default,string" json:"content"`
+	CreateDate string    `thrift:"create_date,2" frugal:"2,default,string" json:"create_date"`
+	Id         int64     `thrift:"id,3" frugal:"3,default,i64" json:"id,string"`
+	User       *UserInfo `thrift:"user,4" frugal:"4,default,UserInfo" json:"user"`
+}
+
+func NewCommentInfo() *CommentInfo {
+	return &CommentInfo{}
+}
+
+func (p *CommentInfo) InitDefault() {
+	*p = CommentInfo{}
+}
+
+func (p *CommentInfo) GetContent() (v string) {
+	return p.Content
+}
+
+func (p *CommentInfo) GetCreateDate() (v string) {
+	return p.CreateDate
+}
+
+func (p *CommentInfo) GetId() (v int64) {
+	return p.Id
+}
+
+var CommentInfo_User_DEFAULT *UserInfo
+
+func (p *CommentInfo) GetUser() (v *UserInfo) {
+	if !p.IsSetUser() {
+		return CommentInfo_User_DEFAULT
+	}
+	return p.User
+}
+func (p *CommentInfo) SetContent(val string) {
+	p.Content = val
+}
+func (p *CommentInfo) SetCreateDate(val string) {
+	p.CreateDate = val
+}
+func (p *CommentInfo) SetId(val int64) {
+	p.Id = val
+}
+func (p *CommentInfo) SetUser(val *UserInfo) {
+	p.User = val
+}
+
+var fieldIDToName_CommentInfo = map[int16]string{
+	1: "content",
+	2: "create_date",
+	3: "id",
+	4: "user",
+}
+
+func (p *CommentInfo) IsSetUser() bool {
+	return p.User != nil
+}
+
+func (p *CommentInfo) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 3:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 4:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CommentInfo[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *CommentInfo) ReadField1(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Content = v
+	}
+	return nil
+}
+
+func (p *CommentInfo) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.CreateDate = v
+	}
+	return nil
+}
+
+func (p *CommentInfo) ReadField3(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.Id = v
+	}
+	return nil
+}
+
+func (p *CommentInfo) ReadField4(iprot thrift.TProtocol) error {
+	p.User = NewUserInfo()
+	if err := p.User.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *CommentInfo) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("CommentInfo"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+		if err = p.writeField4(oprot); err != nil {
+			fieldId = 4
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *CommentInfo) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("content", thrift.STRING, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Content); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *CommentInfo) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("create_date", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.CreateDate); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *CommentInfo) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("id", thrift.I64, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.Id); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *CommentInfo) writeField4(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("user", thrift.STRUCT, 4); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.User.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
+}
+
+func (p *CommentInfo) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("CommentInfo(%+v)", *p)
+}
+
+func (p *CommentInfo) DeepEqual(ano *CommentInfo) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Content) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.CreateDate) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.Id) {
+		return false
+	}
+	if !p.Field4DeepEqual(ano.User) {
+		return false
+	}
+	return true
+}
+
+func (p *CommentInfo) Field1DeepEqual(src string) bool {
+
+	if strings.Compare(p.Content, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *CommentInfo) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.CreateDate, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *CommentInfo) Field3DeepEqual(src int64) bool {
+
+	if p.Id != src {
+		return false
+	}
+	return true
+}
+func (p *CommentInfo) Field4DeepEqual(src *UserInfo) bool {
+
+	if !p.User.DeepEqual(src) {
+		return false
+	}
+	return true
+}

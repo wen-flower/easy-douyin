@@ -26,5 +26,5 @@ func followUser(ctx context.Context, param *user.FollowUserParam) error {
 	if param.Action {
 		return db.FollowUser(ctx, param.LoggedUserId, param.FollowUserId)
 	}
-	return db.CancelFolowUser(ctx, param.LoggedUserId, param.FollowUserId)
+	return db.CancelFollowUser(ctx, param.LoggedUserId, param.FollowUserId)
 }

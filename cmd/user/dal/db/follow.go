@@ -93,8 +93,8 @@ func FollowUser(ctx context.Context, userId int64, toUserId int64) error {
 	})
 }
 
-// CancelFolowUser 取消关注用户
-func CancelFolowUser(ctx context.Context, userId int64, toUserId int64) error {
+// CancelFollowUser 取消关注用户
+func CancelFollowUser(ctx context.Context, userId int64, toUserId int64) error {
 	return DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var curStatus model.Follow
 

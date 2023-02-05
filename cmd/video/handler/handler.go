@@ -49,6 +49,21 @@ func parseVideoInfoList(videos []model.Video, userInfos []*common.UserInfo, favo
 	return resp
 }
 
+// 将 model.Comment 列表和 common.UserInfo 列表组合为 common.CommentInfo 列表
+func parseCommentInfoList(commentList []model.Comment, userInfos []*common.UserInfo) []*common.CommentInfo {
+	resp := make([]*common.CommentInfo, 0, len(commentList))
+	userInfoMap := userInfoToMap(userInfos)
+	for _, _comment := range commentList {
+		resp = append(resp, &common.CommentInfo{
+			Content:    _comment.Content,
+			CreateDate: _comment.CreatedAt.Format("01-02"),
+			Id:         _comment.ID,
+			User:       userInfoMap[_comment.UID],
+		})
+	}
+	return resp
+}
+
 // 将 model.Favorite 列表转为 map
 func modelFavoriteToMap(favorteList []model.Favorite) map[int64]bool {
 	resp := make(map[int64]bool, len(favorteList))
@@ -84,6 +99,28 @@ func modelVideoToUserIdList(videos []model.Video) []int64 {
 	for _, _video := range videos {
 		if _, ok := idMap[_video.UID]; !ok {
 			resp = append(resp, _video.UID)
+		}
+	}
+	return resp
+}
+
+// 将 model.Favorite 列表转为视频ID列表
+func modelFavoriteToVideoIdList(favoriteList []model.Favorite) []int64 {
+	resp := make([]int64, 0, len(favoriteList))
+	for _, _favorite := range favoriteList {
+		resp = append(resp, _favorite.Vid)
+	}
+	return resp
+}
+
+// 将 model.Comment 列表转为评论发布者用户ID列表(不重复)
+func modelCommentToUserIdList(commentList []model.Comment) []int64 {
+	size := len(commentList)
+	idMap := make(map[int64]struct{}, size)
+	resp := make([]int64, 0, size)
+	for _, _comment := range commentList {
+		if _, ok := idMap[_comment.UID]; !ok {
+			resp = append(resp, _comment.UID)
 		}
 	}
 	return resp

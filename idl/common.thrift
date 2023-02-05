@@ -68,3 +68,28 @@ struct VideoInfo {
      */
     string title (go.tag = 'json:"title"')
 }
+
+/**
+ * 评论信息
+ */
+struct CommentInfo {
+    /*
+     * 评论内容
+     */
+	string content (go.tag = 'json:"content"')
+
+    /*
+     * 评论发布日期，格式 mm-dd
+     */
+	string create_date (go.tag = 'json:"create_date"')
+
+    /*
+     * 评论id
+     */
+	i64 id (go.tag = 'json:"id,string"')
+
+    /*
+     * 评论用户信息
+     */
+	UserInfo user (go.tag = 'json:"user"')
+}

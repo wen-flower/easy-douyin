@@ -33,5 +33,17 @@ func Register(h *server.Hertz) {
 			_publish.GET("/list", handler.PublishList)
 			_publish.POST("/action", handler.PublishVideo)
 		}
+
+		_favorite := _douyin.Group("/favorite", mw.JwtMiddleware.MiddlewareFunc())
+		{
+			_favorite.GET("/list", handler.FavoriteList)
+			_favorite.POST("/action", handler.FavoriteAction)
+		}
+
+		_comment := _douyin.Group("/comment", mw.JwtMiddleware.MiddlewareFunc())
+		{
+			_comment.GET("/list", handler.CommentList)
+			_comment.POST("/action", handler.CommentAction)
+		}
 	}
 }
