@@ -1,11 +1,10 @@
 package handler
 
 import (
-	"strconv"
-
 	"github.com/wen-flower/easy-douyin/cmd/video/model"
 	"github.com/wen-flower/easy-douyin/kitex_gen/common"
 	video "github.com/wen-flower/easy-douyin/kitex_gen/video"
+	"github.com/wen-flower/easy-douyin/pkg/constant"
 	"github.com/wen-flower/easy-douyin/pkg/errno"
 )
 
@@ -30,16 +29,6 @@ func errProcess(baseResp **common.BaseResp, err *error) {
 	*baseResp = &resp
 }
 
-// 通过视频ID 解析视频封面 URL
-func parseVideoCoverUrl(vid int64) string {
-	return "video/cover/" + strconv.FormatInt(vid, 10)
-}
-
-// 通过视频ID 解析视频 URL
-func parseVideoUrl(vid int64) string {
-	return "video/" + strconv.FormatInt(vid, 10)
-}
-
 // 将 model.Video 列表和 common.UserInfo 列表以及 model.Favorite 列表组合为 common.VideoInfo 列表
 func parseVideoInfoList(videos []model.Video, userInfos []*common.UserInfo, favoriteList []model.Favorite) []*common.VideoInfo {
 	resp := make([]*common.VideoInfo, 0, len(videos))
@@ -49,11 +38,11 @@ func parseVideoInfoList(videos []model.Video, userInfos []*common.UserInfo, favo
 		resp = append(resp, &common.VideoInfo{
 			Author:        userInfoMap[_video.UID],
 			CommentCount:  _video.CommentCount,
-			CoverUrl:      parseVideoCoverUrl(_video.Vid),
+			CoverUrl:      constant.ParseVideoCoverUrl(_video.Vid),
 			FavoriteCount: _video.FavoriteCount,
 			Id:            _video.Vid,
 			Favorited:     favoriteMap[_video.Vid],
-			PlayUrl:       parseVideoUrl(_video.Vid),
+			PlayUrl:       constant.ParseVideoUrl(_video.Vid),
 			Title:         _video.Title,
 		})
 	}
@@ -94,7 +83,7 @@ func modelVideoToUserIdList(videos []model.Video) []int64 {
 	resp := make([]int64, 0, size)
 	for _, _video := range videos {
 		if _, ok := idMap[_video.UID]; !ok {
-			resp = append(resp, _video.Vid)
+			resp = append(resp, _video.UID)
 		}
 	}
 	return resp

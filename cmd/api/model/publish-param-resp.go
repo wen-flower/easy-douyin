@@ -1,6 +1,10 @@
 package model
 
-import "github.com/wen-flower/easy-douyin/kitex_gen/common"
+import (
+	"mime/multipart"
+
+	"github.com/wen-flower/easy-douyin/kitex_gen/common"
+)
 
 // PublishListParam 获取视频发布列表参数
 type PublishListParam struct {
@@ -11,4 +15,15 @@ type PublishListParam struct {
 type PublishListResp struct {
 	BaseResp
 	VideoList []*common.VideoInfo `json:"video_list"`
+}
+
+// PublishVideoParam 投稿视频参数
+type PublishVideoParam struct {
+	Data  multipart.FileHeader `form:"data"`
+	Title string               `form:"title" vd:"@:mblen($) >= 2 && mblen($) <= 64; msg:'标题长度在2-64之间'"`
+}
+
+// PublishVideoResp 投稿视频响应数据
+type PublishVideoResp struct {
+	BaseResp
 }

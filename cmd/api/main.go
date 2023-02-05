@@ -14,6 +14,7 @@ import (
 	"github.com/wen-flower/easy-douyin/cmd/api/utils"
 	"github.com/wen-flower/easy-douyin/cmd/user/consts"
 	"github.com/wen-flower/easy-douyin/pkg/command"
+	"github.com/wen-flower/easy-douyin/pkg/cos"
 	"github.com/wen-flower/easy-douyin/pkg/mlog/hertzlog"
 	"github.com/wen-flower/easy-douyin/pkg/mlog/kitexlog"
 	"github.com/wen-flower/easy-douyin/pkg/rpc"
@@ -28,6 +29,8 @@ func initialize() {
 	videorpc.Init()
 
 	mw.InitJWT()
+
+	cos.Init()
 
 	utils.InitHertzValidator()
 

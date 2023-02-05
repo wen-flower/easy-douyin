@@ -20,6 +20,23 @@ import (
 
 var JwtMiddleware *jwtmw.HertzJWTMiddleware
 
+// 有 token 则处理，没有则不处理
+func OptionalJwtMiddlewareFunc() app.HandlerFunc {
+	return func(ctx context.Context, req *app.RequestContext) {
+		_, err := JwtMiddleware.ParseToken(ctx, req)
+		if errors.Is(err, jwtmw.ErrEmptyFormToken) || errors.Is(err, jwtmw.ErrEmptyQueryToken) || errors.Is(err, jwtmw.ErrEmptyAuthHeader) {
+			return
+		}
+		if err != nil {
+			msg := JwtMiddleware.HTTPStatusMessageFunc(err, ctx, req)
+			JwtMiddleware.Unauthorized(ctx, req, 200, msg)
+			req.Abort()
+			return
+		}
+		JwtMiddleware.MiddlewareFunc()(ctx, req)
+	}
+}
+
 func InitJWT() {
 	JwtMiddleware, _ = jwtmw.New(&jwtmw.HertzJWTMiddleware{
 		Key:           []byte(consts.JwtSecretKey),

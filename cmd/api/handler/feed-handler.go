@@ -30,6 +30,9 @@ func VideoFeed(ctx context.Context, req *app.RequestContext) {
 		LatestTime:   *param.LatestTime,
 		LoggedInUser: utils.GetLoggedInUID(req),
 	})
+	if err != nil {
+		return
+	}
 
 	resp := new(model.VideoFeedResp)
 	resp.Ok()

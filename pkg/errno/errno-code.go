@@ -12,6 +12,8 @@ const (
 
 	UserNotExistsErrCode
 	UserNameAlreadyExistErrCode
+
+	NotSupportFileTypeErrCode
 )
 
 var (
@@ -25,4 +27,6 @@ var (
 
 	UserNotExistsErr        = New(UserNotExistsErrCode, "用户不存在")
 	UsernameAlreadyExistErr = New(UserNameAlreadyExistErrCode, "用户名已被注册")
+
+	NotSupportFileTypeErr = New(NotSupportFileTypeErrCode, "不支持的文件类型")
 )

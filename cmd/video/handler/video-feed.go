@@ -22,6 +22,13 @@ func (vs *VideoServiceImpl) VideoFeed(ctx context.Context, param *video.VideoFee
 		return
 	}
 
+	videoInfos, err := videoFeed(ctx, param)
+	if err != nil {
+		return
+	}
+
+	resp.VideoList = videoInfos
+
 	return
 }
 

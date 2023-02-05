@@ -26,7 +26,7 @@ func QueryVideoFeed(ctx context.Context, latestTime int64, size int) ([]model.Vi
 	err := DB.Where(
 		msql.Gt(model.VideoCreatedAt), time.UnixMilli(latestTime),
 	).Order(
-		msql.Ase(model.VideoCreatedAt),
+		msql.Asc(model.VideoCreatedAt),
 	).Limit(size).Find(&videoList).Error
 	return videoList, err
 }
