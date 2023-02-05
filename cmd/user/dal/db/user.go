@@ -53,3 +53,11 @@ func ExistsUserByUsername(ctx context.Context, username string) (bool, error) {
 
 	return true, nil
 }
+
+// QueryUser 查询用户数据
+func QueryUser(ctx context.Context, userIds []int64) ([]model.User, error) {
+	var users []model.User
+	e := DB.WithContext(ctx).Where(msql.In(model.UserUID), userIds).Find(&users).Error
+
+	return users, e
+}

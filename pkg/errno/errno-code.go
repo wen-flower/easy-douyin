@@ -10,6 +10,7 @@ const (
 
 	AuthorizationFailedErrCode
 
+	UserNotExistsErrCode
 	UserNameAlreadyExistErrCode
 )
 
@@ -22,5 +23,6 @@ var (
 
 	AuthorizationFailedErr = New(AuthorizationFailedErrCode, "认证失败")
 
+	UserNotExistsErr        = New(UserNotExistsErrCode, "用户不存在")
 	UsernameAlreadyExistErr = New(UserNameAlreadyExistErrCode, "用户名已被注册")
 )

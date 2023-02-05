@@ -1,5 +1,7 @@
 package model
 
+import "github.com/wen-flower/easy-douyin/kitex_gen/common"
+
 // LoginParam 登录请求参数
 type LoginParam struct {
 	// 登录用户名
@@ -25,4 +27,18 @@ type RegisterParam struct {
 
 // RegisterResp 注册响应数据
 type RegisterResp struct {
+	BaseResp
+	UserId *int64  `json:"user_id,string"`
+	Token  *string `json:"token"`
+}
+
+// UserInfoParam 获取用户信息参数
+type UserInfoParam struct {
+	UserId int64 `json:"user_id" query:"user_id" vt:"(@:$ > 0; msg:'用户ID参数错误')"`
+}
+
+// UserInfoResp 获取用户信息响应数据
+type UserInfoResp struct {
+	BaseResp
+	User *common.UserInfo `json:"user"`
 }

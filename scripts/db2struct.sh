@@ -23,11 +23,15 @@ fi
 
 cd "$DIR_PATH" || exit
 
+if [ -z "$(whereis db2struct | awk '{print $2}')" ]; then
+  go install github.com/Shelnutt2/db2struct/cmd/db2struct@latest
+fi
+
 db2struct --host=127.0.0.1 --mysql_port=3306 --user=douyin --password=douyin \
  --database=douyin --table="tb_$TABLE_NAME" \
  --gorm --no-json \
  --package=model --struct "$TABLE_NAME_CAMEL" \
- --target="$TABLE_NAME.go"
+ --target="$TABLE_NAME.go" || exit
 
  sed -i -e "s/sets the insert table name for this struct type/结构体对应的数据库表名/" "$TABLE_NAME.go"
 

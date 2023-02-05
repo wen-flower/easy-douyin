@@ -6,6 +6,7 @@ import (
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	etcd "github.com/kitex-contrib/registry-etcd"
 	"github.com/wen-flower/easy-douyin/cmd/user/consts"
+	"github.com/wen-flower/easy-douyin/kitex_gen/common"
 	"github.com/wen-flower/easy-douyin/kitex_gen/user"
 	"github.com/wen-flower/easy-douyin/kitex_gen/user/userservice"
 	"github.com/wen-flower/easy-douyin/pkg/constant"
@@ -36,6 +37,17 @@ func CheckUser(ctx context.Context, param *user.CheckUserParam) (*int64, error) 
 		return nil, err
 	}
 	return resp.UserId, nil
+}
+
+func QueryUser(ctx context.Context, param *user.QueryUserParam) ([]*common.UserInfo, error) {
+	resp, err := userClient.QueryUser(ctx, param)
+	if err != nil {
+		return nil, err
+	}
+	if err = parseRpcResponse(resp.BaseResp); err != nil {
+		return nil, err
+	}
+	return resp.UserList, nil
 }
 
 // 初始化用户服务 PRC 客户端

@@ -54,7 +54,7 @@ services:
   # Victoriametrics，高性能的开源时间序列数据库和监测解决方案
   victoriametrics:
     container_name: victoriametrics
-    image: victoriametrics/victoria-metrics
+    image: victoriametrics/victoria-metrics:latest
     ports:
       - "8428:8428"
       - "8089:8089"

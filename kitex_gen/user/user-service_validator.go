@@ -43,3 +43,14 @@ func (p *CheckUserResp) IsValid() error {
 	}
 	return nil
 }
+func (p *QueryUserParam) IsValid() error {
+	return nil
+}
+func (p *QueryUserResp) IsValid() error {
+	if p.BaseResp != nil {
+		if err := p.BaseResp.IsValid(); err != nil {
+			return fmt.Errorf("filed BaseResp not valid, %w", err)
+		}
+	}
+	return nil
+}

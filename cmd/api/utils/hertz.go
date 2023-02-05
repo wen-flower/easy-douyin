@@ -3,6 +3,7 @@ package utils
 import (
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/wen-flower/easy-douyin/cmd/api/consts"
+	"net/http"
 	"strconv"
 )
 
@@ -18,4 +19,14 @@ func GetLoggedInUID(req *app.RequestContext) *int64 {
 		return nil
 	}
 	return &uid
+}
+
+// SetLoggedInUID 设置登录用户的 UID
+func SetLoggedInUID(req *app.RequestContext, uid int64) {
+    req.Set(consts.JwtIdentityKey, strconv.FormatInt(uid, 10))
+}
+
+// SendJson 返回响应请求的 JSON 数据
+func SendJson(req *app.RequestContext, data interface{}) {
+	req.JSON(http.StatusOK, data)
 }

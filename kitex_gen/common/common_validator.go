@@ -24,3 +24,6 @@ var (
 func (p *BaseResp) IsValid() error {
 	return nil
 }
+func (p *UserInfo) IsValid() error {
+	return nil
+}
