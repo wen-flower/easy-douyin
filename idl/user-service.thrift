@@ -62,6 +62,16 @@ struct FollowerListResp {
     2: list<common.UserInfo> user_list // 粉丝的信息列表
 }
 
+struct FriendListParam {
+    1: optional i64 logged_user_id // 登录用户的 ID
+    2: i64 look_user_id // 要查询用户的 ID
+}
+
+struct FriendListResp {
+    1: common.BaseResp base_resp
+    2: list<common.UserInfo> user_list // 好友的信息列表
+}
+
 service UserService {
     CreateUserResp CreateUser(1: CreateUserParam param)
     CheckUserResp CheckUser(1: CheckUserParam param)
@@ -70,4 +80,5 @@ service UserService {
     FollowUserResp FollowUser(1: FollowUserParam param)
     FollowListResp FollowList(1: FollowListParam param)
     FollowerListResp FollowerList(1: FollowerListParam param)
+    FriendListResp FriendList(1: FriendListParam param)
 }

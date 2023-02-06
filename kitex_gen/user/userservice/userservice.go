@@ -25,6 +25,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"FollowUser":   kitex.NewMethodInfo(followUserHandler, newUserServiceFollowUserArgs, newUserServiceFollowUserResult, false),
 		"FollowList":   kitex.NewMethodInfo(followListHandler, newUserServiceFollowListArgs, newUserServiceFollowListResult, false),
 		"FollowerList": kitex.NewMethodInfo(followerListHandler, newUserServiceFollowerListArgs, newUserServiceFollowerListResult, false),
+		"FriendList":   kitex.NewMethodInfo(friendListHandler, newUserServiceFriendListArgs, newUserServiceFriendListResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "user",
@@ -148,6 +149,24 @@ func newUserServiceFollowerListResult() interface{} {
 	return user.NewUserServiceFollowerListResult()
 }
 
+func friendListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceFriendListArgs)
+	realResult := result.(*user.UserServiceFriendListResult)
+	success, err := handler.(user.UserService).FriendList(ctx, realArg.Param)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserServiceFriendListArgs() interface{} {
+	return user.NewUserServiceFriendListArgs()
+}
+
+func newUserServiceFriendListResult() interface{} {
+	return user.NewUserServiceFriendListResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -213,6 +232,16 @@ func (p *kClient) FollowerList(ctx context.Context, param *user.FollowerListPara
 	_args.Param = param
 	var _result user.UserServiceFollowerListResult
 	if err = p.c.Call(ctx, "FollowerList", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) FriendList(ctx context.Context, param *user.FriendListParam) (r *user.FriendListResp, err error) {
+	var _args user.UserServiceFriendListArgs
+	_args.Param = param
+	var _result user.UserServiceFriendListResult
+	if err = p.c.Call(ctx, "FriendList", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

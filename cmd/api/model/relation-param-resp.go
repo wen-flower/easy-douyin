@@ -38,3 +38,15 @@ type FollowerListResp struct {
 	BaseResp
 	UserList []*common.UserInfo `json:"user_list"`
 }
+
+// FriendListParam 查询好友列表参数
+type FriendListParam struct {
+	// LookUserId 要查询的用户 ID
+	LookUserId int64 `json:"user_id" query:"user_id" vd:"@:$ >0; msg:'用户ID参数错误'"`
+}
+
+// FriendListResp 查询好友列表响应数据
+type FriendListResp struct {
+	BaseResp
+	UserList []*common.UserInfo `json:"user_list"`
+}

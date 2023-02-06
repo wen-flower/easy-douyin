@@ -89,6 +89,18 @@ func FollowerList(ctx context.Context, param *user.FollowerListParam) ([]*common
 	return resp.UserList, nil
 }
 
+// FriendList 调用查询用户好友列表 RPC 服务
+func FriendList(ctx context.Context, param *user.FriendListParam) ([]*common.UserInfo, error) {
+	resp, err := userClient.FriendList(ctx, param)
+	if err != nil {
+		return nil, err
+	}
+	if err = rpc.ParseRpcResponse(resp.BaseResp); err != nil {
+		return nil, err
+	}
+	return resp.UserList, nil
+}
+
 // 初始化用户服务 PRC 客户端
 func Init() {
 	r, err := etcd.NewEtcdResolver([]string{constant.EtcdAddress})

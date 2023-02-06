@@ -87,3 +87,14 @@ func (p *FollowerListResp) IsValid() error {
 	}
 	return nil
 }
+func (p *FriendListParam) IsValid() error {
+	return nil
+}
+func (p *FriendListResp) IsValid() error {
+	if p.BaseResp != nil {
+		if err := p.BaseResp.IsValid(); err != nil {
+			return fmt.Errorf("filed BaseResp not valid, %w", err)
+		}
+	}
+	return nil
+}

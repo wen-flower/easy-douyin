@@ -23,6 +23,7 @@ func Register(h *server.Hertz) {
 		{
 			_relation.GET("/follow/list", handler.FollowList)
 			_relation.GET("/follower/list", handler.FollowerList)
+			_relation.GET("/friend/list", handler.FriendList)
 			_relation.POST("/action", handler.FollowAction)
 		}
 

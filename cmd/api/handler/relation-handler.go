@@ -89,3 +89,30 @@ func FollowerList(ctx context.Context, req *app.RequestContext) {
 
 	utils.SendJson(req, resp)
 }
+
+// FriendList 好友列表
+// @router /douyin/relation/friend/list [GET]
+func FriendList(ctx context.Context, req *app.RequestContext) {
+	var err error
+	defer errProcess(req, &err)
+
+	var param model.FriendListParam
+	if err = req.BindAndValidate(&param); err != nil {
+		return
+	}
+
+	userInfos, err := userrpc.FriendList(ctx, &user.FriendListParam{
+		LoggedUserId: utils.GetLoggedInUID(req),
+		LookUserId:   param.LookUserId,
+	})
+	if err != nil {
+		return
+	}
+
+	var resp = new(model.FriendListResp)
+	resp.Ok()
+
+	resp.UserList = userInfos
+
+	utils.SendJson(req, resp)
+}
