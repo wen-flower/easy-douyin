@@ -93,3 +93,12 @@ struct CommentInfo {
      */
 	UserInfo user (go.tag = 'json:"user"')
 }
+
+/**
+ * 聊天信息
+ */
+struct MessageInfo {
+    1: i64 id (go.tag = 'json:"id,string"')
+    2: string content (go.tag = 'json:"content"')
+    3: string create_time (go.tag = 'json:"create_time"')
+}

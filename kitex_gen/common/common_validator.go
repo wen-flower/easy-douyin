@@ -43,3 +43,6 @@ func (p *CommentInfo) IsValid() error {
 	}
 	return nil
 }
+func (p *MessageInfo) IsValid() error {
+	return nil
+}

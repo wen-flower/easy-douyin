@@ -9,15 +9,16 @@ import (
 	"github.com/hertz-contrib/obs-opentelemetry/tracing"
 	"github.com/hertz-contrib/pprof"
 	"github.com/wen-flower/easy-douyin/cmd/api/cfg"
+	"github.com/wen-flower/easy-douyin/cmd/api/consts"
 	"github.com/wen-flower/easy-douyin/cmd/api/mw"
 	"github.com/wen-flower/easy-douyin/cmd/api/router"
 	"github.com/wen-flower/easy-douyin/cmd/api/utils"
-	"github.com/wen-flower/easy-douyin/cmd/user/consts"
 	"github.com/wen-flower/easy-douyin/pkg/command"
 	"github.com/wen-flower/easy-douyin/pkg/cos"
 	"github.com/wen-flower/easy-douyin/pkg/mlog/hertzlog"
 	"github.com/wen-flower/easy-douyin/pkg/mlog/kitexlog"
 	"github.com/wen-flower/easy-douyin/pkg/rpc"
+	"github.com/wen-flower/easy-douyin/pkg/rpc/chatrpc"
 	"github.com/wen-flower/easy-douyin/pkg/rpc/userrpc"
 	"github.com/wen-flower/easy-douyin/pkg/rpc/videorpc"
 )
@@ -27,6 +28,7 @@ func initialize() {
 	rpc.Init(consts.ServiceName)
 	userrpc.Init()
 	videorpc.Init()
+	chatrpc.Init()
 
 	mw.InitJWT()
 

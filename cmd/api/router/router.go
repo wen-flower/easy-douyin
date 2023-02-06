@@ -46,5 +46,11 @@ func Register(h *server.Hertz) {
 			_comment.GET("/list", handler.CommentList)
 			_comment.POST("/action", handler.CommentAction)
 		}
+
+		_message := _douyin.Group("/message", mw.JwtMiddleware.MiddlewareFunc())
+		{
+			_message.GET("/chat", handler.MessageList)
+			_message.POST("/action", handler.MessageAction)
+		}
 	}
 }

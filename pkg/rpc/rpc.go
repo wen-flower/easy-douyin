@@ -3,7 +3,6 @@ package rpc
 import (
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/kitex-contrib/obs-opentelemetry/provider"
-	"github.com/wen-flower/easy-douyin/cmd/api/consts"
 	"github.com/wen-flower/easy-douyin/kitex_gen/common"
 	"github.com/wen-flower/easy-douyin/pkg/constant"
 	"github.com/wen-flower/easy-douyin/pkg/errno"
@@ -12,7 +11,7 @@ import (
 // Init 初始化 RPC 客户端
 func Init(serviceName string) {
 	provider.NewOpenTelemetryProvider(
-		provider.WithServiceName(consts.ServiceName),
+		provider.WithServiceName(serviceName),
 		provider.WithExportEndpoint(constant.ExportEndpoint),
 		provider.WithInsecure(),
 	)
