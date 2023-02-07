@@ -17,15 +17,22 @@
 ## 基础特性
 
 - Hertz：
-    - `TODO`
+    - 使用 Hertz 做服务聚合，对外提供 HTTP 接口
+    - 使用 `obs-opentelemetry`、 `jarger for tracing`、 `metrics`、 `logging`
+    - Middleware
+        - JWT
+        - pprof
+        - requestid `TODO`
 - Kitex：
-    - `TODO`
+    - 使用 Kitex 在服务内部交互
+    - 使用 `obs-opentelemetry`、 `jarger for tracing`、 `metrics`、 `logging`
+    - 使用 `registry-etcd` 做为服务发现和注册
 - Gorm：
-    - `TODO`
+    - `使用 Gorm 进行数据库的 ORM 映射`
 - Jaeger：
-    - `TODO`
+    - 链路追踪
 - Grafana：
-    - `TODO`
+    - 数据仪表盘
 
 ## 目录介绍
 
@@ -35,7 +42,36 @@
 
 ### 部署环境
 
-`TODO`：使用 [Docker](https://github.com/docker/compose#docker-compose-v2)
+```shell
+docker-compose up
+```
+
+### 运行服务
+
+API：
+```shell
+cd cmd/api
+make build
+_output/douyin-api --debug --port=380000 --log-pretty
+```
+User RPC：
+```shell
+cd cmd/user
+make build
+_output/douyin-user --debug --port=381000 --log-pretty
+```
+Video RPC：
+```shell
+cd cmd/video
+make build
+_output/douyin-video --debug --port=382000 --log-pretty
+```
+Chat RPC：
+```shell
+cd cmd/chat
+make build
+_output/douyin-chat --debug --port=383000 --log-pretty
+```
 
 ### Jaeger
 > 开源的、端到端的分布式链路追踪
@@ -46,5 +82,7 @@
 > 任何数据的仪表盘
 
 在浏览器上访问 [http://127.0.0.1:3000/](http://127.0.0.1:3000/)
+
+在 `configs` 文件夹中保存有简单配置的仪表盘 JSON 文件
 
 

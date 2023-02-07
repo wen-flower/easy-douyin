@@ -8,12 +8,14 @@ import (
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/hertz-contrib/obs-opentelemetry/tracing"
 	"github.com/hertz-contrib/pprof"
+	"github.com/kitex-contrib/obs-opentelemetry/provider"
 	"github.com/wen-flower/easy-douyin/cmd/api/cfg"
 	"github.com/wen-flower/easy-douyin/cmd/api/consts"
 	"github.com/wen-flower/easy-douyin/cmd/api/mw"
 	"github.com/wen-flower/easy-douyin/cmd/api/router"
 	"github.com/wen-flower/easy-douyin/cmd/api/utils"
 	"github.com/wen-flower/easy-douyin/pkg/command"
+	"github.com/wen-flower/easy-douyin/pkg/constant"
 	"github.com/wen-flower/easy-douyin/pkg/cos"
 	"github.com/wen-flower/easy-douyin/pkg/mlog/hertzlog"
 	"github.com/wen-flower/easy-douyin/pkg/mlog/kitexlog"
@@ -45,6 +47,14 @@ func shutdown() {
 }
 
 func run() error {
+	// 初始化 otlp 跟踪和指标提供程序
+	provider.NewOpenTelemetryProvider(
+		provider.WithServiceNamespace("easy-douyin"),
+		provider.WithServiceName(consts.ServiceName),         // 配置服务名
+		provider.WithExportEndpoint(constant.ExportEndpoint), // 配置导出地址
+		provider.WithInsecure(),                              // 禁用导出程序 gRPC 的客户端传输安全性
+	)
+
 	initialize()
 
 	tracer, config := tracing.NewServerTracer()

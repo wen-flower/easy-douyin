@@ -2,6 +2,9 @@ package main
 
 import (
 	"fmt"
+	"net"
+	"os"
+
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
 	"github.com/kitex-contrib/obs-opentelemetry/provider"
@@ -16,18 +19,23 @@ import (
 	"github.com/wen-flower/easy-douyin/pkg/constant"
 	"github.com/wen-flower/easy-douyin/pkg/mlog/kitexlog"
 	"github.com/wen-flower/easy-douyin/pkg/mw"
-	"net"
-	"os"
 )
 
 // 初始化数据层、日志框架等
 func initialize() {
-    dal.Init()
+	dal.Init()
 
-    kitexlog.Init(cfg.Debug, cfg.LogJson, cfg.LogPretty)
+	kitexlog.Init(cfg.Debug, cfg.LogJson, cfg.LogPretty)
 }
 
 func run() error {
+	// 初始化 otlp 跟踪和指标提供程序
+	provider.NewOpenTelemetryProvider(
+		provider.WithServiceName(consts.ServiceName),         // 配置服务名
+		provider.WithExportEndpoint(constant.ExportEndpoint), // 配置导出地址
+		provider.WithInsecure(),                              // 禁用导出程序 gRPC 的客户端传输安全性
+	)
+
 	// 创建 Etcd 注册中心信息
 	r, err := etcd.NewEtcdRegistry([]string{constant.EtcdAddress})
 	if err != nil {
@@ -40,13 +48,6 @@ func run() error {
 	}
 
 	initialize()
-
-	// 初始化 otlp 跟踪和指标提供程序
-	provider.NewOpenTelemetryProvider(
-		provider.WithServiceName(consts.ServiceName),        // 配置服务名
-		provider.WithExportEndpoint(constant.ExportEndpoint), // 配置导出地址
-		provider.WithInsecure(),                             // 禁用导出程序 gRPC 的客户端传输安全性
-	)
 
 	// 用户服务基础信息
 	info := &rpcinfo.EndpointBasicInfo{
