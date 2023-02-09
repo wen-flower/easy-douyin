@@ -7,7 +7,7 @@ import (
 	"net/url"
 	"os"
 
-	cos "github.com/tencentyun/cos-go-sdk-v5"
+	"github.com/tencentyun/cos-go-sdk-v5"
 	"github.com/wen-flower/easy-douyin/pkg/constant"
 )
 

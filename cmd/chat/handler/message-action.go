@@ -6,7 +6,7 @@ import (
 
 	"github.com/wen-flower/easy-douyin/cmd/chat/dal/rdb"
 	"github.com/wen-flower/easy-douyin/cmd/chat/model"
-	chat "github.com/wen-flower/easy-douyin/kitex_gen/chat"
+	"github.com/wen-flower/easy-douyin/kitex_gen/chat"
 )
 
 // MessageAction 实现了 chat.ChatService 接口

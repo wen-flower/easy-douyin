@@ -6,7 +6,7 @@ import (
 	"github.com/wen-flower/easy-douyin/cmd/user/consts"
 	"github.com/wen-flower/easy-douyin/cmd/user/model"
 	"github.com/wen-flower/easy-douyin/kitex_gen/common"
-	user "github.com/wen-flower/easy-douyin/kitex_gen/user"
+	"github.com/wen-flower/easy-douyin/kitex_gen/user"
 	"github.com/wen-flower/easy-douyin/pkg/errno"
 	"golang.org/x/crypto/sha3"
 )

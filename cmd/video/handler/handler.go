@@ -3,7 +3,7 @@ package handler
 import (
 	"github.com/wen-flower/easy-douyin/cmd/video/model"
 	"github.com/wen-flower/easy-douyin/kitex_gen/common"
-	video "github.com/wen-flower/easy-douyin/kitex_gen/video"
+	"github.com/wen-flower/easy-douyin/kitex_gen/video"
 	"github.com/wen-flower/easy-douyin/pkg/constant"
 	"github.com/wen-flower/easy-douyin/pkg/errno"
 )
@@ -65,10 +65,10 @@ func parseCommentInfoList(commentList []model.Comment, userInfos []*common.UserI
 }
 
 // 将 model.Favorite 列表转为 map
-func modelFavoriteToMap(favorteList []model.Favorite) map[int64]bool {
-	resp := make(map[int64]bool, len(favorteList))
-	for _, favorte := range favorteList {
-		resp[favorte.Vid] = favorte.Status == 1
+func modelFavoriteToMap(favoriteList []model.Favorite) map[int64]bool {
+	resp := make(map[int64]bool, len(favoriteList))
+	for _, favorite := range favoriteList {
+		resp[favorite.Vid] = favorite.Status == 1
 	}
 	return resp
 }

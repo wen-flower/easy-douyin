@@ -10,7 +10,7 @@ func Inc(column string) clause.Expr {
 	return IncByStep(column, 1)
 }
 
-// Inc 创建一个自增 SQL 表达式
+// IncByStep 创建一个自增 SQL 表达式
 func IncByStep(column string, step int) clause.Expr {
 	return gorm.Expr(column+" + ?", step)
 }
@@ -20,7 +20,7 @@ func Dec(column string) clause.Expr {
 	return DecByStep(column, 1)
 }
 
-// Inc 创建一个自增 SQL 表达式
+// DecByStep 创建一个自增 SQL 表达式
 func DecByStep(column string, step int) clause.Expr {
 	return gorm.Expr(column+" - ?", step)
 }

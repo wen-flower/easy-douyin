@@ -74,12 +74,6 @@ func run() error {
 	return err
 }
 
-// RPC 服务运行端口号
-var port int
-
-// Kitex 的运行时位置
-var kitexRuntimeDir string
-
 func main() {
 	cmd := command.NewCommand(consts.ServiceName, func() error {
 		if err := os.Setenv("KITEX_RUNTIME_ROOT", cfg.KitexRuntimeDir); err != nil {

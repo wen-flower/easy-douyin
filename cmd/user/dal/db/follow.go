@@ -39,7 +39,7 @@ func QueryFollowList(ctx context.Context, userId int64) ([]model.Follow, error) 
 	return followList, e
 }
 
-// FolowUser 关注用户
+// FollowUser 关注用户
 func FollowUser(ctx context.Context, userId int64, toUserId int64) error {
 	return DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var curStatus model.Follow

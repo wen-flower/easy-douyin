@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/wen-flower/easy-douyin/cmd/chat/dal/rdb"
-	chat "github.com/wen-flower/easy-douyin/kitex_gen/chat"
+	"github.com/wen-flower/easy-douyin/kitex_gen/chat"
 	"github.com/wen-flower/easy-douyin/kitex_gen/common"
 )
 

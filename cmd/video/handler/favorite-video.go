@@ -7,7 +7,7 @@ import (
 	"github.com/wen-flower/easy-douyin/kitex_gen/video"
 )
 
-// FollowUser 实现了 user.UserService 接口
+// FavoriteVideo 实现了 video.VideoService 接口
 func (vs *VideoServiceImpl) FavoriteVideo(ctx context.Context, param *video.FavoriteVideoParam) (resp *video.FavoriteVideoResp, err error) {
 	resp = new(video.FavoriteVideoResp)
 	defer errProcess(&resp.BaseResp, &err)

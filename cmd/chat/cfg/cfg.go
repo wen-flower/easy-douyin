@@ -25,7 +25,7 @@ var KitexRuntimeDir string
 // MySqlDNS MySQL 连接地址
 var MySqlDNS string
 
-// Redis 连接地址
+// RedisAddr Redis 连接地址
 var RedisAddr string
 
 func Init(flagSet *pflag.FlagSet) {

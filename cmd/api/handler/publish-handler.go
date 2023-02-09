@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"io"
+	"mime/multipart"
 	"strconv"
 
 	"github.com/cloudwego/hertz/pkg/app"
@@ -54,9 +55,12 @@ func PublishVideo(ctx context.Context, req *app.RequestContext) {
 	}
 
 	file, err := param.Data.Open()
-	defer func() {
-		file.Close()
-	}()
+	defer func(file multipart.File) {
+		err := file.Close()
+		if err != nil {
+			hlog.Errorf("err = %v", err)
+		}
+	}(file)
 	if err != nil {
 		return
 	}

@@ -20,7 +20,7 @@ import (
 
 var JwtMiddleware *jwtmw.HertzJWTMiddleware
 
-// 有 token 则处理，没有则不处理
+// OptionalJwtMiddlewareFunc 有 token 则处理，没有则不处理
 func OptionalJwtMiddlewareFunc() app.HandlerFunc {
 	return func(ctx context.Context, req *app.RequestContext) {
 		_, err := JwtMiddleware.ParseToken(ctx, req)

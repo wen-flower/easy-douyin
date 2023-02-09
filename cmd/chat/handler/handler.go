@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/wen-flower/easy-douyin/cmd/chat/model"
-	chat "github.com/wen-flower/easy-douyin/kitex_gen/chat"
+	"github.com/wen-flower/easy-douyin/kitex_gen/chat"
 	"github.com/wen-flower/easy-douyin/kitex_gen/common"
 	"github.com/wen-flower/easy-douyin/pkg/errno"
 )

@@ -104,7 +104,7 @@ func CommentList(ctx context.Context, param *video.CommentListParam) ([]*common.
 	return resp.CommentList, nil
 }
 
-// 初始化用户服务 PRC 客户端
+// Init 初始化用户服务 PRC 客户端
 func Init() {
 	r, err := etcd.NewEtcdResolver([]string{constant.EtcdAddress})
 	if err != nil {
