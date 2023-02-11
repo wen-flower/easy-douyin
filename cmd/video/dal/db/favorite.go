@@ -104,7 +104,7 @@ func CancelFavoriteVideo(ctx context.Context, userId int64, videoId int64) error
 		tx.Model(&model.Favorite{}).Where(msql.Eq(model.FavoriteID), curStatus.ID).Update(model.FavoriteStatus, 0)
 
 		// 更新视频表的冗余数据
-		err = tx.Model(&model.Video{}).Where(msql.Eq(model.VideoID), videoId).Update(model.VideoFavoriteCount, msql.Dec(model.VideoFavoriteCount)).Error
+		err = tx.Model(&model.Video{}).Where(msql.Eq(model.VideoVid), videoId).Update(model.VideoFavoriteCount, msql.Dec(model.VideoFavoriteCount)).Error
 
 		return err
 	})
