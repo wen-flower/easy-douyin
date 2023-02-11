@@ -10,7 +10,6 @@ import (
 	"github.com/wen-flower/easy-douyin/kitex_gen/common"
 	"github.com/wen-flower/easy-douyin/kitex_gen/user"
 	"github.com/wen-flower/easy-douyin/kitex_gen/user/userservice"
-	"github.com/wen-flower/easy-douyin/pkg/constant"
 	"github.com/wen-flower/easy-douyin/pkg/mw"
 	"github.com/wen-flower/easy-douyin/pkg/rpc"
 )
@@ -102,8 +101,8 @@ func FriendList(ctx context.Context, param *user.FriendListParam) ([]*common.Use
 }
 
 // Init 初始化用户服务 PRC 客户端
-func Init() {
-	r, err := etcd.NewEtcdResolver([]string{constant.EtcdAddress})
+func Init(etcdAddress string) {
+	r, err := etcd.NewEtcdResolver([]string{etcdAddress})
 	if err != nil {
 		panic(err)
 	}

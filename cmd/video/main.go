@@ -28,7 +28,7 @@ func initialize() {
 	dal.Init()
 
 	rpc.Init(consts.ServiceName)
-	userrpc.Init()
+	userrpc.Init(cfg.EtcdAddress)
 
 	kitexlog.Init(cfg.Debug, cfg.LogJson, cfg.LogPretty)
 }
@@ -36,13 +36,13 @@ func initialize() {
 func run() error {
 	// 初始化 otlp 跟踪和指标提供程序
 	provider.NewOpenTelemetryProvider(
-		provider.WithServiceName(consts.ServiceName),         // 配置服务名
-		provider.WithExportEndpoint(constant.ExportEndpoint), // 配置导出地址
-		provider.WithInsecure(),                              // 禁用导出程序 gRPC 的客户端传输安全性
+		provider.WithServiceName(consts.ServiceName),    // 配置服务名
+		provider.WithExportEndpoint(cfg.ExportEndpoint), // 配置导出地址
+		provider.WithInsecure(),                         // 禁用导出程序 gRPC 的客户端传输安全性
 	)
 
 	// 创建 Etcd 注册中心信息
-	r, err := etcd.NewEtcdRegistry([]string{constant.EtcdAddress})
+	r, err := etcd.NewEtcdRegistry([]string{cfg.EtcdAddress})
 	if err != nil {
 		panic(err)
 	}

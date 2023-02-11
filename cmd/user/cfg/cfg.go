@@ -27,7 +27,20 @@ var MySqlDNS string
 // UserIdLength 生成的用户 ID 长度
 var UserIdLength int
 
+// Etcd
+var (
+	// EtcdAddress Etcd 服务注册地址
+	EtcdAddress string
+)
+
+// ExportEndpoint OTLP 暴露端口
+var ExportEndpoint string
+
 func Init(flagSet *pflag.FlagSet) {
+	flagSet.StringVar(&EtcdAddress, "etcd-address", "127.0.0.1:2379", "Etcd 服务地址")
+
+	flagSet.StringVar(&ExportEndpoint, "export-endpoint", ":4317", "OTLP 暴露端点")
+
 	flagSet.IntVarP(&Port, "port", "p", 8080, "指定服务运行的端口号")
 
 	homeDir, err := os.Getwd()
