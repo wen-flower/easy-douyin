@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `tb_favorite`
     `created_at` DATETIME NOT NULL COMMENT '第一次点赞时间',
     `updated_at` DATETIME NULL COMMENT '最后一次更新时间',
 
-    CONSTRAINT tb_favorite_vid_uid_uindex UNIQUE KEY (uid) COMMENT '用户点赞同一个视频数据唯一'
+    CONSTRAINT tb_favorite_vid_uid_uindex UNIQUE KEY (vid, uid) COMMENT '用户点赞同一个视频数据唯一'
 ) comment '视频点赞表';
 
 CREATE TABLE IF NOT EXISTS `tb_comment`
