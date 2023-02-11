@@ -50,6 +50,10 @@ docker-compose up
 
 API：
 ```shell
+# 拥有腾讯云 COS 权限的 ID 和 KEY （同时需要修改 pkg/constant/constant.go 的 BucketURL 常量） 
+export TENCENT_COS_SECRET_ID=
+export TENCENT_COS_SECRET_KEY=
+
 cd cmd/api
 make build
 _output/douyin-api --debug --port=380000 --log-pretty

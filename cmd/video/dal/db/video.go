@@ -24,9 +24,9 @@ func QueryVideoList(ctx context.Context, uid int64) ([]model.Video, error) {
 func QueryVideoFeed(ctx context.Context, latestTime int64, size int) ([]model.Video, error) {
 	var videoList []model.Video
 	err := DB.WithContext(ctx).Where(
-		msql.Gt(model.VideoCreatedAt), time.UnixMilli(latestTime),
+		msql.Le(model.VideoCreatedAt), time.UnixMilli(latestTime),
 	).Order(
-		msql.Asc(model.VideoCreatedAt),
+		msql.Desc(model.VideoCreatedAt),
 	).Limit(size).Find(&videoList).Error
 	return videoList, err
 }
