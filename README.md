@@ -34,11 +34,9 @@
 - Grafana：
     - 数据仪表盘
 
-## 目录介绍
-
-[TODO](https://github.com/cloudwego/biz-demo/tree/main/easy_note#catalog-introduce)
-
 ## 快速开始
+
+[答辩汇报文档](https://dezzu5rkli.feishu.cn/docx/ArkLdK6chofYa6xOFP6co2cLnQc)
 
 ### 部署环境
 
