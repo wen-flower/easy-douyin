@@ -23,7 +23,8 @@ func VideoFeed(ctx context.Context, req *app.RequestContext) {
 	}
 
 	if param.LatestTime == nil {
-		*param.LatestTime = time.Now().UnixMilli()
+        latestTime := time.Now().UnixMilli()
+        param.LatestTime = &latestTime
 	}
 
 	videoInfos, err := videorpc.VideoFeed(ctx, &video.VideoFeedParam{

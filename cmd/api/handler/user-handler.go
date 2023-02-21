@@ -48,15 +48,14 @@ func Register(ctx context.Context, req *app.RequestContext) {
 		return
 	}
 
-	var uid *int64
-	uid, err = userrpc.CreateUser(ctx, &user.CreateUserParam{
+	uid, err := userrpc.CreateUser(ctx, &user.CreateUserParam{
 		Username: param.Username,
 		Password: param.Password,
 	})
 	if err != nil {
 		return
 	}
-	req.Set(consts.JwtIdentityKey, uid)
+	req.Set(consts.JwtIdentityKey, *uid)
 	mw.JwtMiddleware.LoginHandler(ctx, req)
 }
 
